@@ -95,8 +95,8 @@ def run_deep_workflow(user_prompt: str,
 
 if __name__ == '__main__':
 
-    query: str = 'Survey of the AI Agent within the recent 3 month, including the latest research papers, open-source projects, and industry applications.'  # noqa
-    task_workdir: str = '/path/to/your_workdir'  # Specify your task work directory here
+    query: str = 'Survey of Agentic RL in 2024 and 2025, compare the SOTA, and point research direction in 2026'
+    task_workdir: str = './output/agentic_rl_survey'
     reuse: bool = False
 
     # Get chat client OpenAI compatible api
@@ -107,12 +107,10 @@ if __name__ == '__main__':
     * `model`: (str), the model ID for inference, `Qwen/Qwen3-235B-A22B-Instruct-2507` can be recommended for document research tasks.
     """
     chat_client = OpenAIChat(
-        api_key='xxx-xxx',
-        base_url='https://api-inference.modelscope.cn/v1/',
-        model='Qwen/Qwen3-235B-A22B-Instruct-2507',
-        generation_config={'extra_body': {
-            'enable_thinking': False
-        }})
+        api_key='AIzaSyDmTcj4-ujVOIswqGLvt0fTZiVe49SU3ZY',
+        base_url='https://generativelanguage.googleapis.com/v1beta/openai/',
+        model='gemini-flash-lite-latest',
+    )
 
     # Get web-search engine client
     # For the ExaSearch, you can get your API key from https://exa.ai

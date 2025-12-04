@@ -1,8 +1,8 @@
 llm:
   service: openai
-  model: claude-sonnet-4-5-20250929
-  openai_api_key:
-  openai_base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+  model: gemini-flash-lite-latest
+  openai_api_key: AIzaSyDmTcj4-ujVOIswqGLvt0fTZiVe49SU3ZY
+  openai_base_url: https://generativelanguage.googleapis.com/v1beta/openai/
 
 
 generation_config:

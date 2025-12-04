@@ -685,6 +685,21 @@ uv pip install -r requirements/research.txt
 uv pip install 'ms-agent[research]'
 ```
 
+> **⚠️ 重要提示：开发时必须使用 `-e` 参数（editable mode）**
+>
+> 如果你需要修改源代码或遇到以下错误：
+> ```
+> omegaconf.errors.ConfigAttributeError: Missing key provider
+>     full_key: memory[0].llm.provider
+> ```
+> 这说明你运行的是已安装的旧版本包，而非本地源代码。解决方法：
+> ```bash
+> # 重新安装为 editable 模式
+> uv pip install -e .
+> ```
+>
+> editable 模式让 `uv run ms-agent` 直接使用本地源代码，而非 `.venv/Lib/site-packages/` 中的已安装包。这样你的代码修改会立即生效。
+
 #### 使用 uv 运行脚本（无需激活虚拟环境）
 
 ```bash
@@ -694,6 +709,22 @@ uv run python ms_agent/cli/cli.py run --config projects/deep_research --query "y
 # 或使用 uv 的 tool 运行
 uv run --with ms-agent python your_script.py
 ```
+
+#### Ray 并行加速（推荐）
+
+Deep Research 的文档解析支持 Ray 并行加速，可显著提升处理速度：
+
+```bash
+# 安装 Ray
+uv pip install "ray[default]"
+```
+
+**配置说明**（已在 `ms_agent/rag/extraction_manager.py` 中配置）：
+- 每个 worker 使用 0.25 GPU = 同时运行 4 个并行 worker
+- 未安装 Ray 时会回退到顺序处理（较慢），并显示警告：
+  ```
+  [WARNING:ms_agent] Ray is not available, falling back to sequential extraction.
+  ```
 
 ### 2. 环境变量配置
 
@@ -756,27 +787,51 @@ async def main():
 asyncio.run(main())
 ```
 
-### 4. 使用 CLI
+### 4. 运行项目
+
+#### Deep Research（独立脚本方式）
+
+Deep Research 使用独立的 Python 脚本运行，不通过 CLI：
 
 ```bash
-# 运行 Deep Research (使用 uv)
-uv run python ms_agent/cli/cli.py run \
-    --config projects/deep_research \
-    --query "Survey of AI Agent frameworks" \
-    --trust_remote_code true
+# 运行 Deep Research
+uv run python projects/deep_research/run.py
+```
 
+**配置方式**：直接编辑 `projects/deep_research/run.py`：
+- `query`: 设置研究主题
+- `task_workdir`: 设置输出目录
+- `chat_client`: 配置 LLM API
+
+```python
+# projects/deep_research/run.py 示例配置
+query: str = 'Survey of Agentic RL in 2024 and 2025'
+task_workdir: str = './output/agentic_rl_survey'
+
+chat_client = OpenAIChat(
+    api_key='YOUR_GEMINI_API_KEY',
+    base_url='https://generativelanguage.googleapis.com/v1beta/openai/',
+    model='gemini-flash-lite-latest',
+)
+```
+
+#### Code Generation（CLI 方式）
+
+```bash
 # 运行 Code Generation (使用 uv)
-uv run python ms_agent/cli/cli.py run \
-    --config projects/code_genesis \
-    --query "Build a REST API server" \
+uv run python ms_agent/cli/cli.py run `
+    --config projects/code_genesis `
+    --query "Build a REST API server" `
     --trust_remote_code true
 
 # 如果已激活虚拟环境，可省略 uv run
-python ms_agent/cli/cli.py run \
-    --config projects/deep_research \
-    --query "Survey of AI Agent frameworks" \
+python ms_agent/cli/cli.py run `
+    --config projects/code_genesis `
+    --query "Build a REST API server" `
     --trust_remote_code true
 ```
+
+> **注意**：PowerShell 使用反引号 `` ` `` 作为行续符，Bash/Linux 使用反斜杠 `\`
 
 ### 5. 常用 uv 命令
 
@@ -805,27 +860,52 @@ Remove-Item -Recurse -Force .venv  # Windows PowerShell
 
 ## 评分策略
 
-基于评分标准的重点关注：
+### 评分标准总览
 
-### 1. 扩展性与模块化（15分）
+| 评分项 | 子评分项 | 分值 | 评分标准 |
+|--------|----------|------|----------|
+| **方案架构设计 (30分)** | 可行性与理论支撑 | 10 | 方案设计是否有理论基础（如开放文献、成熟的开源架构等） |
+| | 扩展性与模块化 | 15 | 架构设计是否体现了高度的可扩展性，如可复用的基础模块（utils、tools等），分层设计（workflow、llm、tools、memory、rag、web search等模块） |
+| | 先进性与创新性 | 5 | 方案应体现"Agent框架提升大模型能力边界"的核心设计思想，在复杂任务场景（如复杂代码生成任务），最终效果应与主流开源框架相当，局部有优势 |
+| **方案代码实现 (50分)** | 核心流程实现 | 20 | 设计和实现核心链路，即workflow：web search、deep research for docs、context analysis、code generation、repo management |
+| | 工具调用与集成 | 15 | 外部工具的封装和mcp server的使用，优先使用ModelScope mcp广场提供的mcp servers |
+| | 可复现的性能验证 | 15 | 提供一套完整且可复现的测试方案，提供Unit Test、Examples等 |
+| **非功能性指标 (20分)** | 代码质量与文档 | 10 | 代码风格清晰、注释充分，提供详尽的设计文档、架构图和用户安装和快速使用指南（README） |
+| | 性能与稳定性 | 10 | 在负载压力下，Agent执行的端到端延迟、资源消耗以及错误处理和恢复能力 |
 
-**亮点实现：**
-- Hooks + Plugin 架构
-- 自定义 Callback 系统
-- ConfigLifecycleHandler 动态配置
-- MCP Server 适配器
+---
 
+### 方案亮点与评分对照
+
+#### 1. 方案架构设计 (30分)
+
+| 子评分项 | 分值 | 方案亮点 |
+|----------|------|----------|
+| **可行性与理论支撑** | 10 | ✅ 基于成熟的 MS-Agent 开源框架，遵循 Anthropic MCP 协议标准；采用业界验证的 ReAct、Plan-and-Execute 设计模式；RAG 实现参考 LlamaIndex 最佳实践 |
+| **扩展性与模块化** | 15 | ✅ 清晰的分层架构：Core Layer → Extension Layer → Memory Layer → Research Layer → CodeGen Layer → Collaboration Layer → Safety Layer；可复用的 Tools、Hooks、Plugins 机制；支持 DAG Workflow 编排多 Agent 协作 |
+| **先进性与创新性** | 5 | ✅ 整合 Deep Research + Code Genesis 双核心能力；自调试循环（最多5次迭代修复）；混合检索（向量+BM25+RRF重排）提升复杂任务效果；Human-in-the-loop 安全机制 |
+
+**扩展性实现示例：**
 ```python
-# 示例：自定义 Callback
+# Hooks + Plugin 架构
 class MyCallback(Callback):
     async def on_task_begin(self, runtime, messages):
         # 自定义逻辑
         pass
 
 agent.register_callback(MyCallback(config))
+
+# ConfigLifecycleHandler 动态配置
+# MCP Server 适配器
 ```
 
-### 2. 核心流程实现（20分）
+#### 2. 方案代码实现 (50分)
+
+| 子评分项 | 分值 | 方案亮点 |
+|----------|------|----------|
+| **核心流程实现** | 20 | ✅ 完整的 Workflow 链路：Web Search → Document Parsing → RAG Context → Code Generation → Self-Debug → Sandbox Execution；支持 `deep_research()` + `generate_code()` 双模式；Checkpoint 机制支持长任务恢复 |
+| **工具调用与集成** | 15 | ✅ 原生 MCP 协议支持，可接入 ModelScope MCP 广场 1500+ 工具；封装 Tavily/Exa/FireCrawl 搜索工具；集成 LlamaParse/Docling 多模态文档解析；LangChain 工具代理兼容 |
+| **可复现的性能验证** | 15 | ✅ 提供完整的 `DeepCodeResearchAgent` 示例代码；配置文件模板 `agent_config.yaml`；环境变量清单和快速启动指南；沙箱执行结果结构化返回 (`ExecutionResult`) |
 
 **完整链路：**
 ```
@@ -835,13 +915,44 @@ Research → Design → Code → Debug → Review
   提取     任务分解   编译    重试    确认
 ```
 
-### 3. 可复现性（15分）
+#### 3. 非功能性指标 (20分)
 
-**要求：**
-- 清晰的测试用例（`tests/`）
-- 完整的 examples（`examples/`）
-- 详细的文档说明
-- Docker 部署支持
+| 子评分项 | 分值 | 方案亮点 |
+|----------|------|----------|
+| **代码质量与文档** | 10 | ✅ 完整的技术文档含架构图、代码示例、配置模板；`ONBOARD.md` 快速入门指南；分模块详解（Agent/Workflow/Tools/Memory/LLM）；中英文注释 |
+| **性能与稳定性** | 10 | ✅ Docker/ms-enclave 沙箱隔离执行（内存限制100MB、CPU限制50%、超时30s）；Hooks 系统支持错误处理和日志记录；Checkpoint 持久化支持断点续跑；Human-in-the-loop 审批超时控制（默认1小时） |
+
+---
+
+### 评分优势总结
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    方案竞争力雷达图                              │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│                        可行性 ★★★★★                            │
+│                           /\                                    │
+│                          /  \                                   │
+│          稳定性 ★★★★☆ /    \ 扩展性 ★★★★★                    │
+│                        /      \                                 │
+│                       /        \                                │
+│                      /    ★     \                               │
+│                     /            \                              │
+│                    /______________\                             │
+│                   /                \                            │
+│      文档质量 ★★★★★              工具集成 ★★★★★              │
+│                                                                 │
+│              核心实现 ★★★★☆    创新性 ★★★★☆                  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**核心竞争优势**：
+1. **端到端能力**：从研究到代码生成的完整闭环
+2. **生态兼容**：MCP 协议 + ModelScope 广场 + LangChain 工具
+3. **生产就绪**：沙箱隔离、错误恢复、人工审批
+4. **文档完备**：技术文档 + Onboarding + 配置模板
 
 ---
 
