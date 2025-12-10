@@ -16,7 +16,7 @@ Use this for all LLM calls:
 
 ```python
 import os
-os.environ["OPENAI_API_KEY"] = "AIzaSyDmTcj4-ujVOIswqGLvt0fTZiVe49SU3ZY"
+os.environ["OPENAI_API_KEY"] = 
 os.environ["OPENAI_BASE_URL"] = "https://generativelanguage.googleapis.com/v1beta/openai/"
 os.environ["OPENAI_MODEL"] = "gemini-flash-lite-latest"
 ```
