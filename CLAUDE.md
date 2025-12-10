@@ -235,3 +235,52 @@ uv pip install -e .
 - Required when developing or when local source has bug fixes not in installed version
 
 This information has been added to ONBOARD.md as a warning note in the installation section.
+
+## Prototype Development Guidelines
+
+### Default API Configuration (Gemini)
+
+Use this API configuration for all prototyping:
+
+```bash
+# .env file (already in .gitignore)
+OPENAI_API_KEY="AIzaSyDmTcj4-ujVOIswqGLvt0fTZiVe49SU3ZY"
+OPENAI_BASE_URL="https://generativelanguage.googleapis.com/v1beta/openai/"
+OPENAI_MODEL="gemini-flash-lite-latest"
+```
+
+Or in Python:
+```python
+import os
+os.environ["OPENAI_API_KEY"] = "AIzaSyDmTcj4-ujVOIswqGLvt0fTZiVe49SU3ZY"
+os.environ["OPENAI_BASE_URL"] = "https://generativelanguage.googleapis.com/v1beta/openai/"
+os.environ["OPENAI_MODEL"] = "gemini-flash-lite-latest"
+```
+
+Or in YAML config:
+```yaml
+llm:
+  service: openai
+  model: gemini-flash-lite-latest
+  openai_api_key: AIzaSyDmTcj4-ujVOIswqGLvt0fTZiVe49SU3ZY
+  openai_base_url: https://generativelanguage.googleapis.com/v1beta/openai/
+```
+
+### Prototype Testing Rule
+
+**IMPORTANT**: When starting to prototype anything, ALWAYS run the test file first before making changes.
+
+1. Check if a test file exists for the module you're working on
+2. Run the existing tests to ensure they pass
+3. Make your changes
+4. Run tests again to verify nothing broke
+
+```bash
+# Example: Before prototyping in ms_agent/agent/
+pytest tests/test_agent.py -v  # Run first!
+
+# Or run all tests
+pytest tests/ -v
+```
+
+This ensures you understand the expected behavior and don't introduce regressions.
