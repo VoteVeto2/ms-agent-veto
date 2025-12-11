@@ -1,0 +1,1156 @@
+{
+  "total_debug_iterations": 13,
+  "simulation_results": [
+    {
+      "input": "from deep_research import __version__; print(__version__)",
+      "expected": "0.1.0",
+      "simulated": "0.1.0",
+      "is_correct": true
+    },
+    {
+      "input": "import deep_research; print(deep_research.__all__)",
+      "expected": "['config', 'core', 'modal', 'reasoning', 'knowledge', 'agents', 'io', 'utils']",
+      "simulated": "['config', 'core', 'modal', 'reasoning', 'knowledge', 'agents', 'io', 'utils']",
+      "is_correct": true
+    },
+    {
+      "input": "# Simulate a corrupted installation where 'agents' submodule is missing\nimport sys\nsys.modules['deep_research.agents'] = None\nimport deep_research",
+      "expected": "CRITICAL:deep_research:Failed to initialize Deep Research package: ... (followed by raised ImportError)",
+      "simulated": "CRITICAL:deep_research:Failed to initialize Deep Research package: No module named 'deep_research.agents'\nTraceback (most recent call last):\n  ... \nImportError: No module named 'deep_research.agents'",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "env_vars": {}
+      },
+      "expected": {
+        "llm": {
+          "provider": "openai",
+          "model_name": "gpt-4-turbo",
+          "temperature": 0.0
+        },
+        "search": {
+          "max_depth": 3,
+          "topology": "tree"
+        },
+        "debug_mode": false
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "env_vars": {
+          "APP_LLM__PROVIDER": "anthropic",
+          "APP_LLM__MODEL_NAME": "claude-3-opus",
+          "APP_LLM__TEMPERATURE": "0.7",
+          "APP_SEARCH__TOPOLOGY": "parallel",
+          "APP_SEARCH__MAX_DEPTH": "5",
+          "APP_MEMORY__CONSOLIDATION_THRESHOLD": "4000",
+          "APP_DEBUG_MODE": "true"
+        }
+      },
+      "expected": {
+        "llm": {
+          "provider": "anthropic",
+          "model_name": "claude-3-opus",
+          "temperature": 0.7
+        },
+        "search": {
+          "max_depth": 5,
+          "topology": "parallel"
+        },
+        "memory": {
+          "consolidation_threshold": 4000
+        },
+        "debug_mode": true
+      },
+      "simulated": {
+        "llm": {
+          "provider": "anthropic",
+          "model_name": "claude-3-opus",
+          "temperature": 0.7,
+          "api_key": null,
+          "max_tokens": 4096
+        },
+        "search": {
+          "max_depth": 5,
+          "max_sub_queries": 5,
+          "topology": "parallel",
+          "request_timeout": 60,
+          "user_agent": "DeepResearchAgent/1.0"
+        },
+        "memory": {
+          "max_context_tokens": 128000,
+          "consolidation_threshold": 4000,
+          "max_memory_items": 100,
+          "enable_forgetting": true,
+          "embedding_model": "text-embedding-3-small"
+        },
+        "debug_mode": true,
+        "work_dir": "./workspace"
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "env_vars": {
+          "APP_LLM__TEMPERATURE": "2.5",
+          "APP_SEARCH__MAX_DEPTH": "0"
+        }
+      },
+      "expected": "ValidationError",
+      "simulated": "ValidationError: 2 validation errors for Settings\nllm.temperature\n  Input should be less than or equal to 2.0 [type=less_than_equal, input_value=2.5, input_type=float]\nsearch.max_depth\n  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]",
+      "is_correct": true
+    },
+    {
+      "input": {},
+      "expected": {
+        "llm": {
+          "provider": "openai",
+          "model_name": "gpt-4-turbo",
+          "temperature": 0.0,
+          "max_tokens": 4096,
+          "api_key": null
+        },
+        "search": {
+          "max_depth": 3,
+          "max_sub_queries": 5,
+          "topology": "tree",
+          "request_timeout": 60,
+          "user_agent": "DeepResearchAgent/1.0"
+        },
+        "memory": {
+          "max_context_tokens": 128000,
+          "consolidation_threshold": 8000,
+          "max_memory_items": 100,
+          "enable_forgetting": true,
+          "embedding_model": "text-embedding-3-small"
+        },
+        "debug_mode": false,
+        "work_dir": "./workspace"
+      },
+      "simulated": {
+        "llm": {
+          "provider": "openai",
+          "model_name": "gpt-4-turbo",
+          "temperature": 0.0,
+          "api_key": null,
+          "max_tokens": 4096
+        },
+        "search": {
+          "max_depth": 3,
+          "max_sub_queries": 5,
+          "topology": "tree",
+          "request_timeout": 60,
+          "user_agent": "DeepResearchAgent/1.0"
+        },
+        "memory": {
+          "max_context_tokens": 128000,
+          "consolidation_threshold": 8000,
+          "max_memory_items": 100,
+          "enable_forgetting": true,
+          "embedding_model": "text-embedding-3-small"
+        },
+        "debug_mode": false,
+        "work_dir": "./workspace"
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "llm": {
+          "provider": "anthropic",
+          "model_name": "claude-3-opus",
+          "temperature": 0.7
+        },
+        "search": {
+          "topology": "parallel",
+          "max_sub_queries": 10
+        },
+        "debug_mode": true
+      },
+      "expected": {
+        "llm": {
+          "provider": "anthropic",
+          "model_name": "claude-3-opus",
+          "temperature": 0.7,
+          "max_tokens": 4096,
+          "api_key": null
+        },
+        "search": {
+          "max_depth": 3,
+          "max_sub_queries": 10,
+          "topology": "parallel",
+          "request_timeout": 60,
+          "user_agent": "DeepResearchAgent/1.0"
+        },
+        "memory": {
+          "max_context_tokens": 128000,
+          "consolidation_threshold": 8000,
+          "max_memory_items": 100,
+          "enable_forgetting": true,
+          "embedding_model": "text-embedding-3-small"
+        },
+        "debug_mode": true,
+        "work_dir": "./workspace"
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "llm": {
+          "temperature": 2.0
+        },
+        "search": {
+          "max_depth": 1
+        }
+      },
+      "expected": {
+        "llm": {
+          "provider": "openai",
+          "model_name": "gpt-4-turbo",
+          "temperature": 2.0,
+          "max_tokens": 4096,
+          "api_key": null
+        },
+        "search": {
+          "max_depth": 1,
+          "max_sub_queries": 5,
+          "topology": "tree",
+          "request_timeout": 60,
+          "user_agent": "DeepResearchAgent/1.0"
+        },
+        "memory": {
+          "max_context_tokens": 128000,
+          "consolidation_threshold": 8000,
+          "max_memory_items": 100,
+          "enable_forgetting": true,
+          "embedding_model": "text-embedding-3-small"
+        },
+        "debug_mode": false,
+        "work_dir": "./workspace"
+      },
+      "simulated": {
+        "llm": {
+          "provider": "openai",
+          "model_name": "gpt-4-turbo",
+          "temperature": 2.0,
+          "api_key": null,
+          "max_tokens": 4096
+        },
+        "search": {
+          "max_depth": 1,
+          "max_sub_queries": 5,
+          "topology": "tree",
+          "request_timeout": 60,
+          "user_agent": "DeepResearchAgent/1.0"
+        },
+        "memory": {
+          "max_context_tokens": 128000,
+          "consolidation_threshold": 8000,
+          "max_memory_items": 100,
+          "enable_forgetting": true,
+          "embedding_model": "text-embedding-3-small"
+        },
+        "debug_mode": false,
+        "work_dir": "./workspace"
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "env_vars": {
+          "APP_LLM__PROVIDER": "anthropic",
+          "APP_LLM__MODEL_NAME": "claude-3-opus",
+          "APP_LLM__TEMPERATURE": "0.7",
+          "APP_SEARCH__TOPOLOGY": "parallel",
+          "APP_SEARCH__MAX_DEPTH": "5",
+          "APP_DEBUG_MODE": "true"
+        }
+      },
+      "expected": {
+        "llm.provider": "anthropic",
+        "llm.name": "claude-3-opus",
+        "llm.temperature": 0.7,
+        "search.topology": "parallel",
+        "search.max_depth": 5,
+        "debug_mode": true
+      },
+      "simulated": {
+        "llm.provider": "anthropic",
+        "llm.name": "claude-3-opus",
+        "llm.temperature": 0.7,
+        "search.topology": "parallel",
+        "search.max_depth": 5,
+        "debug_mode": true
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "env_vars": {}
+      },
+      "expected": {
+        "llm.provider": "openai",
+        "llm.name": "gpt-4-turbo",
+        "llm.temperature": 0.0,
+        "search.topology": "tree",
+        "search.max_depth": 3,
+        "debug_mode": false
+      },
+      "simulated": {
+        "llm.provider": "openai",
+        "llm.name": "gpt-4-turbo",
+        "llm.temperature": 0.0,
+        "search.topology": "tree",
+        "search.max_depth": 3,
+        "debug_mode": false
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "env_vars": {
+          "APP_LLM__TEMPERATURE": "2.5"
+        }
+      },
+      "expected": "pydantic_core.ValidationError (Input should be less than or equal to 2.0)",
+      "simulated": "pydantic_core.ValidationError: 1 validation error for Settings\nllm.temperature\n  Input should be less than or equal to 2.0 [type=less_than_equal, input_value=2.5, input_type=float]",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "content": "The James Webb Space Telescope released its first image on July 11, 2022.",
+        "source_url": "https://www.nasa.gov/webbfirstimages",
+        "source_type": "web_page",
+        "confidence": 0.99,
+        "valid_from": "2022-07-11T00:00:00Z",
+        "metadata": {
+          "author": "NASA",
+          "verified": true
+        }
+      },
+      "expected": {
+        "model": "Evidence",
+        "status": "valid",
+        "parsed_fields": {
+          "source_type": "EvidenceType.WEB_PAGE",
+          "confidence": 0.99,
+          "valid_from": "datetime(2022, 7, 11, tzinfo=timezone.utc)"
+        }
+      },
+      "simulated": {
+        "model": "Evidence",
+        "status": "valid",
+        "parsed_fields": {
+          "source_type": "EvidenceType.WEB_PAGE",
+          "confidence": 0.99,
+          "valid_from": "datetime(2022, 7, 11, 0, 0, tzinfo=timezone.utc)"
+        }
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "query": "Cross-reference historical inflation data",
+        "status": "blocked",
+        "dependencies": [
+          "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+          "b1fecd88-8d1a-3fe7-aa5c-5cc8ad271b22"
+        ],
+        "assigned_agent": "DataAnalyst_Agent_01",
+        "description": "Waiting for primary data collection task to finish."
+      },
+      "expected": {
+        "model": "SubTask",
+        "status": "valid",
+        "parsed_fields": {
+          "status": "TaskStatus.BLOCKED",
+          "dependencies_count": 2,
+          "result": "None"
+        }
+      },
+      "simulated": {
+        "model": "SubTask",
+        "status": "valid",
+        "parsed_fields": {
+          "status": "TaskStatus.BLOCKED",
+          "dependencies_count": 2,
+          "result": "None"
+        }
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "query": "Explain the architecture of Transformers",
+        "executive_summary": "Transformers rely on self-attention mechanisms...",
+        "sections": [
+          {
+            "title": "Attention Mechanism",
+            "content": "Attention allows the model to weigh token importance...",
+            "citation_ids": []
+          }
+        ],
+        "all_evidence": [
+          {
+            "content": "Attention is all you need paper.",
+            "source_type": "document"
+          }
+        ],
+        "completion_status": "completed"
+      },
+      "expected": {
+        "model": "ResearchReport",
+        "status": "valid",
+        "parsed_fields": {
+          "sections_count": 1,
+          "evidence_count": 1,
+          "completion_status": "TaskStatus.COMPLETED"
+        }
+      },
+      "simulated": {
+        "model": "ResearchReport",
+        "status": "valid",
+        "parsed_fields": {
+          "sections_count": 1,
+          "evidence_count": 1,
+          "completion_status": "TaskStatus.COMPLETED"
+        }
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "description": "Standard text completion using OpenAI provider (Happy Path)",
+        "setup": {
+          "config": {
+            "provider": "ModelProvider.OPENAI",
+            "model_name": "gpt-4o"
+          },
+          "env_vars": {
+            "OPENAI_API_KEY": "sk-test-key"
+          }
+        },
+        "function_call": {
+          "method": "get_completion",
+          "args": {
+            "messages": [
+              {
+                "role": "system",
+                "content": "You are a research assistant."
+              },
+              {
+                "role": "user",
+                "content": "Summarize the concept of Deep Research."
+              }
+            ],
+            "temperature": 0.7
+          }
+        }
+      },
+      "expected": {
+        "type": "str",
+        "condition": "Response is a non-empty string."
+      },
+      "simulated": "Deep Research is an iterative process...",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "description": "Structured output generation for Query Planning using Local provider (Deep Research Architecture)",
+        "setup": {
+          "config": {
+            "provider": "ModelProvider.LOCAL",
+            "model_name": "llama-3-8b"
+          },
+          "env_vars": {
+            "LOCAL_LLM_BASE_URL": "http://localhost:11434/v1"
+          }
+        },
+        "function_call": {
+          "method": "get_structured_completion",
+          "args": {
+            "messages": [
+              {
+                "role": "user",
+                "content": "Create a research plan for 'semiconductors'."
+              }
+            ],
+            "response_model": "class ResearchPlan(BaseModel):\n    topic: str\n    sub_questions: List[str]\n    required_sources: int"
+          }
+        }
+      },
+      "expected": {
+        "type": "ResearchPlan",
+        "condition": "Returns an instance of the Pydantic model with populated fields (e.g., topic='semiconductors')."
+      },
+      "simulated": "ResearchPlan(topic='semiconductors', sub_questions=['What are the types of semiconductors?', 'How are they manufactured?', 'What is the current market status?'], required_sources=5)",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "description": "Initialization with unsupported provider (Edge Case)",
+        "setup": {
+          "config": {
+            "provider": "ModelProvider.GOOGLE_VERTEX",
+            "model_name": "gemini-pro"
+          },
+          "env_vars": {}
+        },
+        "function_call": {
+          "method": "__init__",
+          "args": {}
+        }
+      },
+      "expected": {
+        "type": "Exception",
+        "exception_class": "ValueError",
+        "message_contains": "Unsupported model provider"
+      },
+      "simulated": {
+        "type": "Exception",
+        "exception_class": "ValueError",
+        "message": "Unsupported model provider: ModelProvider.GOOGLE_VERTEX"
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "query": "Investigate the socioeconomic impacts of remote work adoption in the EU vs the US from 2020 to 2024.",
+        "strategy": "tree",
+        "context": null
+      },
+      "expected": "A ResearchPlan object where strategy is 'tree'. The tasks should form a Directed Acyclic Graph (DAG), likely containing parallel branches for 'EU research' and 'US research', converging into a final dependency-heavy task for 'Comparative Analysis'.",
+      "simulated": "ResearchPlan(root_goal='Investigate the socioeconomic impacts of remote work adoption in the EU vs the US from 2020 to 2024.', strategy=<PlanningStrategy.TREE: 'tree'>, reasoning='Decomposed into parallel regional data collection followed by a comparative analysis.', tasks=[SubTask(id='EU_1', description='Gather socioeconomic data on remote work in the EU (2020-2024)', dependencies=[], expected_output='EU Data Report', estimated_complexity='medium'), SubTask(id='US_1', description='Gather socioeconomic data on remote work in the US (2020-2024)', dependencies=[], expected_output='US Data Report', estimated_complexity='medium'), SubTask(id='COMP_1', description='Compare EU and US data to identify socioeconomic impacts', dependencies=['EU_1', 'US_1'], expected_output='Comparative Analysis', estimated_complexity='high')])",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "query": "Retrieve the current price of Bitcoin, Ethereum, and Solana from three different exchanges.",
+        "strategy": "parallel",
+        "context": null
+      },
+      "expected": "A ResearchPlan object where strategy is 'parallel'. Crucially, due to the `_validate_and_clean_plan` method, every SubTask in the returned list must have an empty `dependencies` list (`[]`), even if the LLM originally attempted to generate them.",
+      "simulated": {
+        "root_goal": "Retrieve the current price of Bitcoin, Ethereum, and Solana from three different exchanges.",
+        "strategy": "parallel",
+        "reasoning": "Fetching prices for different assets are independent actions.",
+        "tasks": [
+          {
+            "id": "1",
+            "description": "Fetch Bitcoin price from 3 exchanges",
+            "dependencies": [],
+            "expected_output": "BTC Price",
+            "estimated_complexity": "low"
+          },
+          {
+            "id": "2",
+            "description": "Fetch Ethereum price from 3 exchanges",
+            "dependencies": [],
+            "expected_output": "ETH Price",
+            "estimated_complexity": "low"
+          },
+          {
+            "id": "3",
+            "description": "Fetch Solana price from 3 exchanges",
+            "dependencies": [],
+            "expected_output": "SOL Price",
+            "estimated_complexity": "low"
+          },
+          {
+            "id": "4",
+            "description": "Aggregate and compare prices",
+            "dependencies": [],
+            "expected_output": "Comparison Table",
+            "estimated_complexity": "low"
+          }
+        ]
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "query": "Based on the identified security vulnerabilities, outline a remediation plan.",
+        "strategy": "sequential",
+        "context": "Previous Step Findings: Found SQL injection in login module and XSS in the comments section."
+      },
+      "expected": "A ResearchPlan object where strategy is 'sequential'. The generated tasks should explicitly reference the context (SQLi and XSS) and form a strict linear chain (e.g., Task 2 depends on Task 1) to ensure a step-by-step fix implementation.",
+      "simulated": {
+        "root_goal": "Based on the identified security vulnerabilities, outline a remediation plan.",
+        "strategy": "sequential",
+        "reasoning": "Given the critical nature of security vulnerabilities (SQLi and XSS), a sequential plan is chosen to address the most critical issue (SQLi) first, followed by XSS, and finally a verification step.",
+        "tasks": [
+          {
+            "id": "1",
+            "description": "Analyze and patch the SQL injection vulnerability in the login module.",
+            "dependencies": [],
+            "expected_output": "Patched login code and validation that SQLi is resolved.",
+            "estimated_complexity": "high"
+          },
+          {
+            "id": "2",
+            "description": "Remediate the XSS vulnerability in the comments section by implementing input sanitization.",
+            "dependencies": [
+              "1"
+            ],
+            "expected_output": "Secure comments section code preventing XSS.",
+            "estimated_complexity": "medium"
+          },
+          {
+            "id": "3",
+            "description": "Perform comprehensive security testing to verify both fixes and ensure no regressions.",
+            "dependencies": [
+              "2"
+            ],
+            "expected_output": "Final security audit report confirming system safety.",
+            "estimated_complexity": "medium"
+          }
+        ]
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "method": "_calculate_relevance",
+        "content": "Deep learning is a subset of machine learning methods.",
+        "query": "deep learning methods"
+      },
+      "expected": 1.0,
+      "simulated": 1.0,
+      "is_correct": true
+    },
+    {
+      "input": {
+        "method": "_calculate_relevance",
+        "content": "The quick brown fox jumps over the lazy dog.",
+        "query": "brown bear"
+      },
+      "expected": 0.65,
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "method": "_calculate_relevance",
+        "content": "It is what it is.",
+        "query": "it is"
+      },
+      "expected": 0.0,
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "method": "run",
+        "query": "latest developments in autonomous agents 2024",
+        "max_sources": 2
+      },
+      "expected": "A list of AcquiredData objects (length 1-2) where each object has a relevance_score >= 0.15 and contains content related to the query.",
+      "simulated": [
+        {
+          "source_url": "url1",
+          "title": "Agents 2024",
+          "relevance_score": 1.0,
+          "evidence_type": "WEB_PAGE",
+          "snippet": "snippet1"
+        },
+        {
+          "source_url": "url3",
+          "title": "AI Trends",
+          "relevance_score": 0.8,
+          "evidence_type": "WEB_PAGE",
+          "snippet": "snippet3"
+        }
+      ],
+      "is_correct": true
+    },
+    {
+      "input": {
+        "method": "_calculate_relevance",
+        "content": "The recipe calls for two cups of flour and one cup of sugar to bake the cake.",
+        "query": "quantum field theory"
+      },
+      "expected": 0.0,
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "method": "run",
+        "query": "",
+        "max_sources": 3
+      },
+      "expected": [],
+      "simulated": [],
+      "is_correct": true
+    },
+    {
+      "input": {
+        "query": "advancements in solid state batteries 2024",
+        "max_sources": 2
+      },
+      "expected": "A list of 1 to 2 AcquiredData objects, each containing a valid URL, non-empty content string, and a relevance_score greater than or equal to 0.15.",
+      "simulated": "[AcquiredData(source_url='...', title='...', content='...', relevance_score=0.85, ...), AcquiredData(source_url='...', title='...', content='...', relevance_score=0.75, ...)]",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "query": "xhqkzj_random_nonsense_string_12345",
+        "max_sources": 3
+      },
+      "expected": "[] (An empty list, as the search engine should return no results or the relevance calculator should filter out unrelated matches)",
+      "simulated": [],
+      "is_correct": true
+    },
+    {
+      "input": {
+        "query": "Python programming",
+        "max_sources": 0
+      },
+      "expected": "[] (An empty list, verifying that the function respects the max_sources limit of 0 immediately)",
+      "simulated": [],
+      "is_correct": true
+    },
+    {
+      "input": {
+        "test_case": "Standard Consolidation and Retrieval",
+        "setup": {
+          "max_memory_size": 100,
+          "embedding_dim": 1536
+        },
+        "actions": [
+          {
+            "step": 1,
+            "method": "process_input",
+            "params": {
+              "raw_content": "The James Webb Space Telescope (JWST) has captured new images of the Pillars of Creation. These images reveal young stars forming in dense clouds of gas and dust."
+            },
+            "mock_llm_response": {
+              "summary": "JWST captured images of star formation in the Pillars of Creation.",
+              "tags": [
+                "astronomy",
+                "jwst",
+                "stars"
+              ],
+              "memory_type": "episodic",
+              "importance": 8
+            }
+          },
+          {
+            "step": 2,
+            "method": "retrieve",
+            "params": {
+              "query": "webb telescope star formation",
+              "limit": 1
+            }
+          }
+        ]
+      },
+      "expected": {
+        "retrieved_count": 1,
+        "top_result_content": "JWST captured images of star formation in the Pillars of Creation.",
+        "top_result_tags": [
+          "astronomy",
+          "jwst",
+          "stars"
+        ],
+        "access_count_after_retrieval": 1
+      },
+      "simulated": {
+        "retrieved_count": 1,
+        "top_result_content": "JWST captured images of star formation in the Pillars of Creation.",
+        "top_result_tags": [
+          "astronomy",
+          "jwst",
+          "stars"
+        ],
+        "access_count_after_retrieval": 1
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "test_case": "Memory Pruning (Edge Case: Capacity Exceeded)",
+        "setup": {
+          "max_memory_size": 2,
+          "embedding_dim": 1536
+        },
+        "actions": [
+          {
+            "method": "process_input",
+            "params": {
+              "raw_content": "I bought milk today."
+            },
+            "mock_llm_response": {
+              "summary": "Bought milk.",
+              "tags": [
+                "groceries"
+              ],
+              "memory_type": "episodic",
+              "importance": 2
+            }
+          },
+          {
+            "method": "process_input",
+            "params": {
+              "raw_content": "The server password is 'Secret123'."
+            },
+            "mock_llm_response": {
+              "summary": "Server password is 'Secret123'.",
+              "tags": [
+                "security",
+                "passwords"
+              ],
+              "memory_type": "semantic",
+              "importance": 10
+            }
+          },
+          {
+            "method": "process_input",
+            "params": {
+              "raw_content": "The meeting is at 4 PM."
+            },
+            "mock_llm_response": {
+              "summary": "Meeting at 4 PM.",
+              "tags": [
+                "schedule"
+              ],
+              "memory_type": "episodic",
+              "importance": 6
+            }
+          }
+        ]
+      },
+      "expected": {
+        "total_memories_stored": 2,
+        "memories_present_by_summary": [
+          "Server password is 'Secret123'.",
+          "Meeting at 4 PM."
+        ],
+        "memories_deleted_by_summary": [
+          "Bought milk."
+        ]
+      },
+      "simulated": {
+        "total_memories_stored": 2,
+        "memories_present_by_summary": [
+          "Server password is 'Secret123'.",
+          "Meeting at 4 PM."
+        ],
+        "memories_deleted_by_summary": [
+          "Bought milk."
+        ]
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "test_case": "Update Existing Memory (State Change)",
+        "setup": {
+          "max_memory_size": 10,
+          "embedding_dim": 1536
+        },
+        "actions": [
+          {
+            "step": 1,
+            "method": "process_input",
+            "params": {
+              "raw_content": "Project Alpha deadline is October 1st."
+            },
+            "mock_llm_response": {
+              "summary": "Project Alpha deadline: Oct 1st.",
+              "tags": [
+                "project alpha",
+                "deadline"
+              ],
+              "memory_type": "semantic",
+              "importance": 7
+            }
+          },
+          {
+            "step": 2,
+            "method": "update",
+            "params": {
+              "memory_id_reference": "step_1_result_id",
+              "new_content": "The deadline has been pushed back to October 15th due to delays."
+            },
+            "mock_llm_response": {
+              "summary": "Project Alpha deadline delayed to Oct 15th.",
+              "tags": [
+                "project alpha",
+                "deadline",
+                "delay"
+              ],
+              "memory_type": "semantic",
+              "importance": 8
+            }
+          }
+        ]
+      },
+      "expected": {
+        "memory_id_preserved": true,
+        "final_content": "Project Alpha deadline delayed to Oct 15th.",
+        "final_tags": [
+          "project alpha",
+          "deadline",
+          "delay"
+        ],
+        "access_count": 1
+      },
+      "simulated": {
+        "memory_id_preserved": true,
+        "final_content": "Project Alpha deadline delayed to Oct 15th.",
+        "final_tags": [
+          "project alpha",
+          "deadline",
+          "delay"
+        ],
+        "access_count": 1
+      },
+      "is_correct": true
+    },
+    {
+      "input": "Compare the performance of LLaMA-3 versus GPT-4 on Python code generation tasks based on benchmarks published in 2024.",
+      "expected": {
+        "status": "success",
+        "query": "Compare the performance of LLaMA-3 versus GPT-4 on Python code generation tasks based on benchmarks published in 2024.",
+        "report": "A string containing the synthesized research report.",
+        "plan": "A dictionary containing a list of sub-tasks (e.g., 'Search for LLaMA-3 benchmarks', 'Search for GPT-4 coding performance').",
+        "execution_time": "A float value > 0"
+      },
+      "simulated": {
+        "status": "success",
+        "query": "Compare the performance of LLaMA-3 versus GPT-4 on Python code generation tasks based on benchmarks published in 2024.",
+        "report": "Synthesized report string...",
+        "plan": {
+          "sub_tasks": [
+            {
+              "description": "Search LLaMA-3 benchmarks",
+              "status": "COMPLETED"
+            },
+            {
+              "description": "Search GPT-4 benchmarks",
+              "status": "COMPLETED"
+            }
+          ]
+        },
+        "execution_time": 5.43
+      },
+      "is_correct": true
+    },
+    {
+      "input": "",
+      "expected": {
+        "status": "error",
+        "query": "",
+        "error": "A string describing the exception (e.g., 'Query cannot be empty' or a Planner validation error).",
+        "execution_time": "A float value > 0"
+      },
+      "simulated": {
+        "status": "error",
+        "query": "",
+        "error": "Query cannot be empty",
+        "execution_time": 0.0012
+      },
+      "is_correct": true
+    },
+    {
+      "input": "What is the current weather in Tokyo?",
+      "expected": {
+        "status": "success",
+        "query": "What is the current weather in Tokyo?",
+        "report": "A string containing the weather report.",
+        "plan": "A dictionary containing at least one sub-task related to retrieving weather data.",
+        "execution_time": "A float value > 0"
+      },
+      "simulated": {
+        "status": "success",
+        "query": "What is the current weather in Tokyo?",
+        "report": "The current weather in Tokyo is sunny and 25C.",
+        "plan": {
+          "sub_tasks": [
+            {
+              "description": "Fetch Tokyo weather",
+              "status": "COMPLETED"
+            }
+          ]
+        },
+        "execution_time": 2.5
+      },
+      "is_correct": true
+    },
+    {
+      "input": "python src/main.py \"Current state of Solid State Batteries\"",
+      "expected": "Standard execution: Displays the 'Deep Research Agent' banner with the query, uses the default 'SEQUENTIAL' strategy and 5 subtasks. The progress spinner runs, followed by '[bold green]Research Complete![/bold green]' and a rendered Markdown report.",
+      "simulated": "\u256d\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e\n\u2502 Deep Research Agent                                                          \u2502\n\u2502 Query: Current state of Solid State Batteries                                \u2502\n\u2502 Strategy: sequential | Max Subtasks: 5                                       \u2502\n\u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256f\n\nResearch Complete!\n\n\u256d\u2500 Final Research Report \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e\n\u2502 [Rendered Markdown Content]                                                  \u2502\n\u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256f",
+      "is_correct": true
+    },
+    {
+      "input": "python src/main.py \"Generative AI in Medicine\" --strategy parallel --max-subtasks 10 --timeout 600 --verbose",
+      "expected": "Advanced execution: Enables DEBUG logging ('Verbose mode enabled'), initializes the agent with 'PARALLEL' strategy and a higher subtask limit (10). The console displays detailed internal logs during execution alongside the standard UI elements.",
+      "simulated": "Verbose mode enabled.\n[Panel displaying 'Deep Research Agent', Query: 'Generative AI in Medicine', Strategy: 'parallel', Max Subtasks: '10']\nAgent configuration initialized: ...\nInitializing research workflow... \nResearch Complete!\n[Panel displaying Final Research Report]",
+      "is_correct": true
+    },
+    {
+      "input": "python src/main.py \"Edge Case Test\" --max-subtasks -1",
+      "expected": "Error handling: The AgentConfig initialization fails due to the negative integer for subtasks. The script catches the exception and prints '[bold red]Configuration Error:[/bold red]' followed by the specific validation error message, then exits with code 1.",
+      "simulated": "[bold red]Configuration Error:[/bold red] <Validation Error Message>\n",
+      "is_correct": true
+    }
+  ],
+  "test_results": [
+    {
+      "file": "src/__init__.py",
+      "test": "test_package_metadata",
+      "passed": false
+    },
+    {
+      "file": "src/__init__.py",
+      "test": "test_public_api_exports",
+      "passed": false
+    },
+    {
+      "file": "src/__init__.py",
+      "test": "test_logging_setup",
+      "passed": false
+    },
+    {
+      "file": "src/__init__.py",
+      "test": "test_edge_case_exports_consistency",
+      "passed": false
+    },
+    {
+      "file": "src/__init__.py",
+      "test": "test_edge_case_all_elements_are_strings",
+      "passed": false
+    },
+    {
+      "file": "src/__init__.py",
+      "test": "test_error_handling_missing_submodule",
+      "passed": false
+    },
+    {
+      "file": "src/config.py",
+      "test": "test_settings_defaults",
+      "passed": false
+    },
+    {
+      "file": "src/config.py",
+      "test": "test_settings_from_env_vars",
+      "passed": false
+    },
+    {
+      "file": "src/config.py",
+      "test": "test_model_config_alias_handling",
+      "passed": false
+    },
+    {
+      "file": "src/config.py",
+      "test": "test_secret_str_behavior",
+      "passed": false
+    },
+    {
+      "file": "src/config.py",
+      "test": "test_enum_string_coercion",
+      "passed": false
+    },
+    {
+      "file": "src/config.py",
+      "test": "test_validation_error_bounds",
+      "passed": false
+    },
+    {
+      "file": "src/config.py",
+      "test": "test_validation_error_invalid_enum",
+      "passed": false
+    },
+    {
+      "file": "src/schemas.py",
+      "test": "test_evidence_creation_defaults",
+      "passed": false
+    },
+    {
+      "file": "src/schemas.py",
+      "test": "test_memory_context_add_fragment",
+      "passed": false
+    },
+    {
+      "file": "src/schemas.py",
+      "test": "test_research_report_aggregation",
+      "passed": false
+    },
+    {
+      "file": "src/schemas.py",
+      "test": "test_evidence_confidence_boundaries",
+      "passed": false
+    },
+    {
+      "file": "src/schemas.py",
+      "test": "test_subtask_optional_fields_and_defaults",
+      "passed": false
+    },
+    {
+      "file": "src/schemas.py",
+      "test": "test_evidence_invalid_confidence_score",
+      "passed": false
+    },
+    {
+      "file": "src/schemas.py",
+      "test": "test_evidence_invalid_url_format",
+      "passed": false
+    }
+  ],
+  "refinement": {
+    "iterations": 3,
+    "improvements": [
+      {
+        "iteration": 1,
+        "file": "src/__init__.py",
+        "success": true
+      },
+      {
+        "iteration": 1,
+        "file": "src/schemas.py",
+        "success": true
+      },
+      {
+        "iteration": 1,
+        "file": "src/config.py",
+        "success": true
+      },
+      {
+        "iteration": 2,
+        "file": "src/__init__.py",
+        "success": true
+      },
+      {
+        "iteration": 2,
+        "file": "src/schemas.py",
+        "success": true
+      },
+      {
+        "iteration": 2,
+        "file": "src/config.py",
+        "success": true
+      },
+      {
+        "iteration": 3,
+        "file": "src/__init__.py",
+        "success": true
+      },
+      {
+        "iteration": 3,
+        "file": "src/schemas.py",
+        "success": true
+      },
+      {
+        "iteration": 3,
+        "file": "src/config.py",
+        "success": true
+      }
+    ]
+  }
+}

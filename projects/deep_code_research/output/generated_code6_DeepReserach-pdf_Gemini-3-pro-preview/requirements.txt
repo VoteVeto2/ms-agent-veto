@@ -1,0 +1,69 @@
+# Core Framework & Configuration
+pydantic>=2.6.0
+pydantic-settings>=2.2.0
+python-dotenv>=1.0.1
+pyyaml>=6.0.1
+typing-extensions>=4.9.0
+
+# LLM Clients & Orchestration
+openai>=1.12.0
+anthropic>=0.19.0
+instructor>=1.0.0
+tiktoken>=0.6.0
+tenacity>=8.2.3
+
+# Web Search & Knowledge Retrieval
+requests>=2.31.0
+httpx>=0.27.0
+beautifulsoup4>=4.12.3
+lxml>=5.1.0
+duckduckgo-search>=5.0.0
+arxiv>=2.1.0
+semanticscholar>=0.7.0
+wikipedia>=1.4.0
+
+# Multi-modal Processing (PDF, Image, Audio)
+pymupdf>=1.23.21         # High-performance PDF parsing
+pypdf>=4.0.1             # Fallback PDF processing
+pillow>=10.2.0           # Image processing
+pytesseract>=0.3.10      # OCR capabilities
+pdf2image>=1.17.0        # PDF to Image conversion
+
+# Data Science & Reasoning
+numpy>=1.26.4
+pandas>=2.2.0
+scipy>=1.12.0
+sympy>=1.12              # Symbolic mathematics
+scikit-learn>=1.4.0
+networkx>=3.2.1          # Graph algorithms for Knowledge Graph
+
+# Domain Specific Plugins
+biopython>=1.83          # For bio_plugin.py
+rdkit>=2023.9.5          # For chem_plugin.py (optional, via pip usually rdkit-pypi)
+
+# Vector Database & Embeddings
+chromadb>=0.4.22         # Local vector storage
+sentence-transformers>=2.5.0
+sqlalchemy>=2.0.27       # SQL backend for metadata
+
+# Code Execution & Sandbox
+docker>=7.0.0            # For sandboxed code execution
+ipykernel>=6.29.0        # For code snippet execution
+
+# UI & Visualization
+streamlit>=1.31.0
+gradio>=4.19.0
+matplotlib>=3.8.3
+plotly>=5.19.0
+
+# Logging & Observability
+loguru>=0.7.2
+tqdm>=4.66.2
+
+# Testing & Quality Assurance
+pytest>=8.0.0
+pytest-asyncio>=0.23.5
+mypy>=1.8.0
+black>=24.2.0
+isort>=5.13.2
+ruff>=0.3.0

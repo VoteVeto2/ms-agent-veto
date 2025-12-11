@@ -1,0 +1,73 @@
+{
+  "generated_at": "2025-12-11T02:48:07.415408",
+  "file_count": 13,
+  "files": [
+    {
+      "path": "README.md",
+      "size": 5971,
+      "type": "markdown"
+    },
+    {
+      "path": "requirements.txt",
+      "size": 1639,
+      "type": "text"
+    },
+    {
+      "path": ".env.example",
+      "size": 1612,
+      "type": "unknown"
+    },
+    {
+      "path": "src/__init__.py",
+      "size": 2100,
+      "type": "python"
+    },
+    {
+      "path": "src/config.py",
+      "size": 8096,
+      "type": "python"
+    },
+    {
+      "path": "src/schemas.py",
+      "size": 7662,
+      "type": "python"
+    },
+    {
+      "path": "src/llm_client.py",
+      "size": 6539,
+      "type": "python"
+    },
+    {
+      "path": "src/planning.py",
+      "size": 9890,
+      "type": "python"
+    },
+    {
+      "path": "src/acquisition.py",
+      "size": 9102,
+      "type": "python"
+    },
+    {
+      "path": "src/memory.py",
+      "size": 14660,
+      "type": "python"
+    },
+    {
+      "path": "src/generation.py",
+      "size": 10696,
+      "type": "python"
+    },
+    {
+      "path": "src/agent.py",
+      "size": 8211,
+      "type": "python"
+    },
+    {
+      "path": "src/main.py",
+      "size": 4129,
+      "type": "python"
+    }
+  ],
+  "metrics_included": true,
+  "total_size": 90307
+}
