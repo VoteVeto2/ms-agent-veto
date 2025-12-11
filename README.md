@@ -52,7 +52,7 @@ uv run pytest tests -q
 
 > 使用的技术框架或系统架构图等相关说明，请填写在这里
 
-
+**项目位置**：`deep_code_research` 位于 `projects/deep_code_research` 文件夹下
 ```
 deep_code_research/
 ├── run.py                  # 入口文件
