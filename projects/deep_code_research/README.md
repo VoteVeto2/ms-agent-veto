@@ -90,7 +90,7 @@ Logging & Monitoring
 Get-Content -Path ".cursor\debug.log" -Tail 50 -Wait
 Get-Content -Path "c:\Users\votev\Documents\Git\ms-agent-veto\.cursor\debug.log" -Wait
 ```
-- For a clean run, delete `.cursor\debug.log` before starting (manual step).
+- For a clean run, delete `.cursor\debug.log` before starting (**manual step**).
 - Captured events: pipeline stage start/done (research, codegen, refinement, output), run start/error, invocation context (prompt length, references path, output dir, config), and codegen checkpoints keyed by `runId`.
 
 Tests
@@ -100,3 +100,12 @@ From repo root:
 cd projects\deep_code_research
 uv run pytest tests -q
 ```
+
+Output Results and Timing
+---
+
+| Model | Duration | Output Folder |
+|-------|----------|---------------|
+| `gemini-flash-lite-latest` | ~10 min | `generated_code4_DeepResearch-pdf_gemini-flash-lite-latest` |
+| `gemini-flash-latest` | ~35 min | `generated_code5_DeepResearch-pdf_Gemini-flash-latest` |
+| `gemini-3-pro-preview` | ~ 90 min | `generated_code6_DeepResearch-pdf_Gemini-3-pro-preview` |

@@ -22,4 +22,4 @@ uv run --env-file .env python run.py --prompt "Read DeepResearch.pdf first, desi
 |-------|----------|---------------|
 | `gemini-flash-lite-latest` | ~10 min | `generated_code4_DeepResearch-pdf_gemini-flash-lite-latest` |
 | `gemini-flash-latest` | ~35 min | `generated_code5_DeepResearch-pdf_Gemini-flash-latest` |
-| `gemini-3-pro-preview | ~ 80 min | `generated_code6_DeepResearch-pdf_Gemini-3-pro-preview` |
+| `gemini-3-pro-preview | ~ 90 min | `generated_code6_DeepResearch-pdf_Gemini-3-pro-preview` |
