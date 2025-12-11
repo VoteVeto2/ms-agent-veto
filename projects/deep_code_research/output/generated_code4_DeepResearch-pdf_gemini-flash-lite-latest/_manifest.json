@@ -1,0 +1,53 @@
+{
+  "generated_at": "2025-12-10T23:39:15.139444",
+  "file_count": 9,
+  "files": [
+    {
+      "path": "src/llm_interface.py",
+      "size": 7191,
+      "type": "python"
+    },
+    {
+      "path": "src/components/query_planning.py",
+      "size": 9754,
+      "type": "python"
+    },
+    {
+      "path": "src/components/information_acquisition.py",
+      "size": 10244,
+      "type": "python"
+    },
+    {
+      "path": "src/components/memory_management.py",
+      "size": 12823,
+      "type": "python"
+    },
+    {
+      "path": "src/components/answer_generation.py",
+      "size": 9096,
+      "type": "python"
+    },
+    {
+      "path": "src/deep_research_system.py",
+      "size": 8401,
+      "type": "python"
+    },
+    {
+      "path": "src/main.py",
+      "size": 5308,
+      "type": "python"
+    },
+    {
+      "path": "README.md",
+      "size": 5699,
+      "type": "markdown"
+    },
+    {
+      "path": "requirements.txt",
+      "size": 150,
+      "type": "text"
+    }
+  ],
+  "metrics_included": true,
+  "total_size": 68666
+}

@@ -12,7 +12,10 @@ import os
 import sys
 import asyncio
 import argparse
+import time
 from typing import Optional
+
+from debug_logger import log_event
 
 # Add current dir to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -147,6 +150,8 @@ def progress_callback(stage: str, percent: float):
 async def main():
     """Main entry point."""
     args = parse_args()
+    run_id = os.environ.get("DEBUG_RUN_ID") or str(int(time.time() * 1000))
+    os.environ["DEBUG_RUN_ID"] = run_id
 
     # Build config
     config = {}
@@ -202,12 +207,28 @@ async def main():
     print()
 
     try:
+        # region agent log
+        log_event(
+            location="run.main",
+            message="invoke_pipeline",
+            data={
+                "prompt_chars": len(prompt) if prompt else 0,
+                "references_path": references,
+                "output_dir": args.output,
+                "config": config,
+            },
+            run_id=run_id,
+            hypothesis_id="H0",
+        )
+        # endregion
+
         result = await run_pipeline(
             prompt=prompt,
             references_path=references,
             output_dir=args.output,
             config=config,
-            on_progress=on_progress
+            on_progress=on_progress,
+            run_id=run_id,
         )
 
         print()

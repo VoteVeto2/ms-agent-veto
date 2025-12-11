@@ -32,7 +32,8 @@ async def run_pipeline(
     references_path: str,
     output_dir: str = "./output",
     config: Optional[Dict[str, Any]] = None,
-    on_progress: Optional[Callable[[str, float], None]] = None
+    on_progress: Optional[Callable[[str, float], None]] = None,
+    run_id: Optional[str] = None,
 ) -> PipelineResult:
     """
     Main entry point for the full DeepCodeResearch pipeline.
@@ -48,7 +49,7 @@ async def run_pipeline(
         PipelineResult with generated files, metrics, and output path
     """
     pipeline_config = PipelineConfig.from_dict(config or {})
-    pipeline = Pipeline(pipeline_config)
+    pipeline = Pipeline(pipeline_config, run_id=run_id)
 
     if on_progress:
         pipeline.on_progress = on_progress

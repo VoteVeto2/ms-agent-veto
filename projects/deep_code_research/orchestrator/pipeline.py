@@ -15,6 +15,8 @@ from dataclasses import dataclass, field
 from typing import Dict, Any, Optional, Callable, List
 from enum import Enum
 
+from debug_logger import log_event
+
 # Add parent dir to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -92,8 +94,9 @@ class Pipeline:
     4. Output - Package into ZIP
     """
 
-    def __init__(self, config: Optional[PipelineConfig] = None):
+    def __init__(self, config: Optional[PipelineConfig] = None, run_id: Optional[str] = None):
         self.config = config or PipelineConfig()
+        self.run_id = run_id or "run1"
         self.on_progress: Optional[Callable[[str, float], None]] = None
         self._current_stage = PipelineStage.INIT
         self._research_context = None
@@ -122,8 +125,38 @@ class Pipeline:
         """
         result = PipelineResult(success=False)
 
+        # region agent log
+        log_event(
+            location="pipeline.run",
+            message="run_start",
+            data={
+                "prompt_chars": len(prompt) if prompt else 0,
+                "references_path": references_path,
+                "output_dir": output_dir,
+                "config": {
+                    "use_adaptive_rag": self.config.use_adaptive_rag,
+                    "use_simulation_debug": self.config.use_simulation_debug,
+                    "use_auto_tests": self.config.use_auto_tests,
+                    "max_refinement_iterations": self.config.max_refinement_iterations,
+                    "output_format": self.config.output_format,
+                },
+            },
+            run_id=self.run_id,
+            hypothesis_id="H0",
+        )
+        # endregion
+
         try:
             # Stage 1: Research
+            # region agent log
+            log_event(
+                location="pipeline.run",
+                message="stage_start",
+                data={"stage": "research"},
+                run_id=self.run_id,
+                hypothesis_id="H0",
+            )
+            # endregion
             self._report_progress("research", 0.0)
             research_context = await self._run_research(references_path)
             result.stages_completed.append("research")
@@ -131,17 +164,66 @@ class Pipeline:
 
             if not research_context:
                 result.errors.append("Research stage failed")
+                # region agent log
+                log_event(
+                    location="pipeline.run",
+                    message="stage_failed",
+                    data={"stage": "research"},
+                    run_id=self.run_id,
+                    hypothesis_id="H0",
+                )
+                # endregion
                 return result
+            # region agent log
+            log_event(
+                location="pipeline.run",
+                message="stage_done",
+                data={"stage": "research"},
+                run_id=self.run_id,
+                hypothesis_id="H0",
+            )
+            # endregion
 
             # Stage 2: Initial Code Generation
+            # region agent log
+            log_event(
+                location="pipeline.run",
+                message="stage_start",
+                data={"stage": "codegen"},
+                run_id=self.run_id,
+                hypothesis_id="H0",
+            )
+            # endregion
             self._report_progress("codegen", 0.0)
             files, metrics = await self._run_codegen(prompt, research_context)
             result.stages_completed.append("codegen")
             result.metrics.update(metrics)
             self._report_progress("codegen", 1.0)
+            # region agent log
+            log_event(
+                location="pipeline.run",
+                message="stage_done",
+                data={
+                    "stage": "codegen",
+                    "file_count": len(files) if files else 0,
+                    "tests": len(metrics.get("test_results", [])) if metrics else 0,
+                },
+                run_id=self.run_id,
+                hypothesis_id="H0",
+            )
+            # endregion
 
             # Stage 3: Refinement Loop
             if self.config.max_refinement_iterations > 0:
+                # region agent log
+                log_event(
+                    location="pipeline.run",
+                    message="stage_start",
+                    data={"stage": "refinement"},
+                    run_id=self.run_id,
+                    hypothesis_id="H0",
+                )
+                # endregion
                 self._report_progress("refinement", 0.0)
                 files, refinement_metrics = await self._run_refinement(
                     prompt, research_context, files, metrics
@@ -149,12 +231,42 @@ class Pipeline:
                 result.stages_completed.append("refinement")
                 result.metrics["refinement"] = refinement_metrics
                 self._report_progress("refinement", 1.0)
+                # region agent log
+                log_event(
+                    location="pipeline.run",
+                    message="stage_done",
+                    data={
+                        "stage": "refinement",
+                        "iterations": refinement_metrics.get("iterations", 0),
+                    },
+                    run_id=self.run_id,
+                    hypothesis_id="H0",
+                )
+                # endregion
 
             # Stage 4: Output
+            # region agent log
+            log_event(
+                location="pipeline.run",
+                message="stage_start",
+                data={"stage": "output"},
+                run_id=self.run_id,
+                hypothesis_id="H0",
+            )
+            # endregion
             self._report_progress("output", 0.0)
             output_path = await self._generate_output(files, output_dir, result.metrics)
             result.stages_completed.append("output")
             self._report_progress("output", 1.0)
+            # region agent log
+            log_event(
+                location="pipeline.run",
+                message="stage_done",
+                data={"stage": "output", "output_path": output_path},
+                run_id=self.run_id,
+                hypothesis_id="H0",
+            )
+            # endregion
 
             result.success = True
             result.files = files
@@ -163,6 +275,15 @@ class Pipeline:
         except Exception as e:
             import traceback
             result.errors.append(f"{str(e)}\n{traceback.format_exc()}")
+            # region agent log
+            log_event(
+                location="pipeline.run",
+                message="run_error",
+                data={"error": str(e)},
+                run_id=self.run_id,
+                hypothesis_id="H0",
+            )
+            # endregion
 
         return result
 

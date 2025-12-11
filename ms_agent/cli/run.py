@@ -111,7 +111,7 @@ class RunCMD(CLICommand):
         author_file = os.path.join(config_path, 'author.txt')
         author = ''
         if os.path.exists(author_file):
-            with open(author_file, 'r') as f:
+            with open(author_file, 'r', encoding='utf-8') as f:
                 author = f.read()
         blue_color_prefix = '\033[34m'
         blue_color_suffix = '\033[0m'

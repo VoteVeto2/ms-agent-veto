@@ -28,6 +28,7 @@ wheels/
 .installed.cfg
 *.egg
 *output*
+!projects/deep_code_research/output/
 /package
 /temp
 **/tmp/

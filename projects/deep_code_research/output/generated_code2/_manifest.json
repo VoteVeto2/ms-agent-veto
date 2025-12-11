@@ -1,0 +1,38 @@
+{
+  "generated_at": "2025-12-10T23:08:52.302456",
+  "file_count": 6,
+  "files": [
+    {
+      "path": "src/config.py",
+      "size": 4887,
+      "type": "python"
+    },
+    {
+      "path": "src/models.py",
+      "size": 7026,
+      "type": "python"
+    },
+    {
+      "path": "src/client.py",
+      "size": 5806,
+      "type": "python"
+    },
+    {
+      "path": "src/main.py",
+      "size": 335,
+      "type": "python"
+    },
+    {
+      "path": "requirements.txt",
+      "size": 71,
+      "type": "text"
+    },
+    {
+      "path": "README.md",
+      "size": 5109,
+      "type": "markdown"
+    }
+  ],
+  "metrics_included": true,
+  "total_size": 23234
+}

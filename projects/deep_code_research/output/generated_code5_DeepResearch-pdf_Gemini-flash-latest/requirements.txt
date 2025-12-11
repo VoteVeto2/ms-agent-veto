@@ -1,0 +1,22 @@
+pydantic
+httpx
+PyYAML
+python-dotenv
+lxml
+pypdf
+Pillow
+SQLAlchemy
+google-search-results
+numpy
+loguru
+tqdm
+# Optional dependencies based on architecture:
+# If using specific LLM SDKs compatible with OpenRouter:
+# openai
+# anthropic
+# If using advanced embedding/vector store:
+# faiss-cpu
+# sentence-transformers
+# If using a UI:
+# streamlit
+# gradio

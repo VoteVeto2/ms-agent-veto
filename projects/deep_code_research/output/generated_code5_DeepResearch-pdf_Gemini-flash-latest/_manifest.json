@@ -1,0 +1,68 @@
+{
+  "generated_at": "2025-12-11T01:07:44.254474",
+  "file_count": 12,
+  "files": [
+    {
+      "path": "README.md",
+      "size": 7518,
+      "type": "markdown"
+    },
+    {
+      "path": "requirements.txt",
+      "size": 347,
+      "type": "text"
+    },
+    {
+      "path": "config.py",
+      "size": 9215,
+      "type": "python"
+    },
+    {
+      "path": "src/main.py",
+      "size": 5660,
+      "type": "python"
+    },
+    {
+      "path": "src/utils/models.py",
+      "size": 4407,
+      "type": "python"
+    },
+    {
+      "path": "src/utils/tools.py",
+      "size": 6817,
+      "type": "python"
+    },
+    {
+      "path": "src/prompts/workflow_prompts.py",
+      "size": 7733,
+      "type": "python"
+    },
+    {
+      "path": "src/modules/query_planner.py",
+      "size": 8091,
+      "type": "python"
+    },
+    {
+      "path": "src/modules/information_acquisition.py",
+      "size": 4573,
+      "type": "python"
+    },
+    {
+      "path": "src/modules/memory_manager.py",
+      "size": 13359,
+      "type": "python"
+    },
+    {
+      "path": "src/modules/answer_generator.py",
+      "size": 7843,
+      "type": "python"
+    },
+    {
+      "path": "src/core/agent.py",
+      "size": 10105,
+      "type": "python"
+    }
+  ],
+  "metrics_included": true,
+  "total_size": 85668
+}

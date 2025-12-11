@@ -1,0 +1,43 @@
+{
+  "generated_at": "2025-12-10T23:14:02.394856",
+  "file_count": 7,
+  "files": [
+    {
+      "path": "src/models.py",
+      "size": 4693,
+      "type": "python"
+    },
+    {
+      "path": "src/modules/query_planner.py",
+      "size": 10918,
+      "type": "python"
+    },
+    {
+      "path": "src/modules/answer_generator.py",
+      "size": 11758,
+      "type": "python"
+    },
+    {
+      "path": "src/client.py",
+      "size": 8116,
+      "type": "python"
+    },
+    {
+      "path": "src/main.py",
+      "size": 7655,
+      "type": "python"
+    },
+    {
+      "path": "requirements.txt",
+      "size": 181,
+      "type": "text"
+    },
+    {
+      "path": "README.md",
+      "size": 5862,
+      "type": "markdown"
+    }
+  ],
+  "metrics_included": true,
+  "total_size": 49183
+}

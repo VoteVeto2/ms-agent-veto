@@ -102,7 +102,7 @@ class LLMAgent(Agent):
         mcp_config = mcp_config or {}
         if self.mcp_server_file is not None and os.path.isfile(
                 self.mcp_server_file):
-            with open(self.mcp_server_file, 'r') as f:
+            with open(self.mcp_server_file, 'r', encoding='utf-8') as f:
                 config = json.load(f)
                 config.update(mcp_config)
                 return config

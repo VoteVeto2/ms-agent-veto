@@ -1,0 +1,1459 @@
+{
+  "total_debug_iterations": 12,
+  "simulation_results": [
+    {
+      "input": {
+        "description": "Test 1: Default Configuration (No environment variables set). Checks that defaults are loaded and validation warnings are triggered.",
+        "environment_variables": {}
+      },
+      "expected": {
+        "LLM.OPENAI_API_KEY": "YOUR_OPENAI_KEY_HERE",
+        "LLM.DEFAULT_MODEL_NAME": "gpt-4o",
+        "AGENT.PLANNING_STRATEGY_DEFAULT": "Adaptive",
+        "AGENT.MAX_PLANNING_STEPS": 15,
+        "validation_output": [
+          "Warning: OPENAI_API_KEY is not set via environment variables. Using placeholder.",
+          "Warning: ANTHROPIC_API_KEY is not set via environment variables. Using placeholder."
+        ]
+      },
+      "simulated": {
+        "LLM.OPENAI_API_KEY": "YOUR_OPENAI_KEY_HERE",
+        "LLM.DEFAULT_MODEL_NAME": "gpt-4o",
+        "AGENT.PLANNING_STRATEGY_DEFAULT": "Adaptive",
+        "AGENT.MAX_PLANNING_STEPS": 15,
+        "validation_output": [
+          "Warning: OPENAI_API_KEY is not set via environment variables. Using placeholder.",
+          "Warning: ANTHROPIC_API_KEY is not set via environment variables. Using placeholder."
+        ]
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "description": "Test 2: Cost-Optimized Configuration. Overrides models and limits complexity for faster, cheaper runs. Keys are set to suppress warnings.",
+        "environment_variables": {
+          "OPENAI_API_KEY": "sk-test-12345",
+          "DEFAULT_MODEL_NAME": "gpt-3.5-turbo-0125",
+          "FAST_MODEL_NAME": "gpt-3.5-turbo-0125",
+          "MAX_PARALLEL_QUERIES": "2",
+          "MAX_PLANNING_STEPS": "5"
+        }
+      },
+      "expected": {
+        "LLM.OPENAI_API_KEY": "sk-test-12345",
+        "LLM.DEFAULT_MODEL_NAME": "gpt-3.5-turbo-0125",
+        "AGENT.MAX_PARALLEL_QUERIES": 2,
+        "AGENT.MAX_PLANNING_STEPS": 5,
+        "validation_output": [
+          "Warning: ANTHROPIC_API_KEY is not set via environment variables. Using placeholder."
+        ]
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "description": "Test 3: Deep Research Configuration (Maximum Quality/Context). Overrides parameters to maximize output length, context retrieval, and planning depth.",
+        "environment_variables": {
+          "OPENAI_API_KEY": "sk-deep-98765",
+          "ANTHROPIC_API_KEY": "ak-deep-98765",
+          "MAX_TOKENS_OUTPUT": "8192",
+          "RETRIEVAL_TOP_K": "10",
+          "MAX_PLANNING_STEPS": "30",
+          "LOG_LEVEL": "DEBUG"
+        }
+      },
+      "expected": {
+        "LLM.MAX_TOKENS_OUTPUT": 8192,
+        "AGENT.RETRIEVAL_TOP_K": 10,
+        "AGENT.MAX_PLANNING_STEPS": 30,
+        "AGENT.LOG_LEVEL": "DEBUG",
+        "validation_output": []
+      },
+      "simulated": {
+        "LLM.MAX_TOKENS_OUTPUT": 4096,
+        "AGENT.RETRIEVAL_TOP_K": 5,
+        "AGENT.MAX_PLANNING_STEPS": 15,
+        "AGENT.LOG_LEVEL": "DEBUG",
+        "validation_output": []
+      },
+      "is_correct": false
+    },
+    {
+      "input": {
+        "description": "Test Case 1: Default Configuration (No environment variables set).",
+        "env_vars": {}
+      },
+      "expected": {
+        "LLM": {
+          "OPENAI_API_KEY": "YOUR_OPENAI_KEY_HERE",
+          "DEFAULT_MODEL_NAME": "gpt-4o",
+          "TEMPERATURE": 0.1,
+          "VECTOR_DIMENSION": 1536,
+          "RETRY_ATTEMPTS": 3
+        },
+        "AGENT": {
+          "PLANNING_STRATEGY_DEFAULT": "Adaptive",
+          "WEB_SEARCH_TOOL_ENABLED": true,
+          "MAX_PARALLEL_QUERIES": 4,
+          "RETRIEVAL_TOP_K": 5,
+          "AGENT_TIMEOUT_SECONDS": 3600
+        }
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "description": "Test Case 2: Typical Custom Configuration (Valid overrides for various types: string, int, float, boolean).",
+        "env_vars": {
+          "OPENAI_API_KEY": "sk-prod-12345",
+          "DEFAULT_MODEL_NAME": "claude-3-opus",
+          "TEMPERATURE": "0.85",
+          "MAX_TOKENS_OUTPUT": "8192",
+          "WEB_SEARCH_TOOL_ENABLED": "false",
+          "MAX_PARALLEL_QUERIES": "8",
+          "RETRIEVAL_TOP_K": "10",
+          "LOG_LEVEL": "DEBUG"
+        }
+      },
+      "expected": {
+        "LLM": {
+          "OPENAI_API_KEY": "sk-prod-12345",
+          "DEFAULT_MODEL_NAME": "claude-3-opus",
+          "TEMPERATURE": 0.85,
+          "MAX_TOKENS_OUTPUT": 8192
+        },
+        "AGENT": {
+          "WEB_SEARCH_TOOL_ENABLED": false,
+          "MAX_PARALLEL_QUERIES": 8,
+          "RETRIEVAL_TOP_K": 10,
+          "LOG_LEVEL": "DEBUG"
+        }
+      },
+      "simulated": {
+        "LLM": {
+          "OPENAI_API_KEY": "sk-prod-12345",
+          "DEFAULT_MODEL_NAME": "claude-3-opus",
+          "TEMPERATURE": 0.85,
+          "MAX_TOKENS_OUTPUT": 8192
+        },
+        "AGENT": {
+          "WEB_SEARCH_TOOL_ENABLED": false,
+          "MAX_PARALLEL_QUERIES": 8,
+          "RETRIEVAL_TOP_K": 10,
+          "LOG_LEVEL": "DEBUG"
+        }
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "description": "Test Case 3: Edge Case (Invalid type input causing fallback to default, alongside valid overrides).",
+        "env_vars": {
+          "VECTOR_DIMENSION": "high_dim_string",
+          "RETRY_DELAY_SECONDS": "2.5",
+          "MAX_PLANNING_STEPS": "30",
+          "MEMORY_CHUNK_SIZE": "2048",
+          "WEB_SEARCH_TOOL_ENABLED": "Y"
+        }
+      },
+      "expected": {
+        "LLM": {
+          "VECTOR_DIMENSION": 1536,
+          "RETRY_DELAY_SECONDS": 5,
+          "RETRY_ATTEMPTS": 3
+        },
+        "AGENT": {
+          "MAX_PLANNING_STEPS": 30,
+          "MEMORY_CHUNK_SIZE": 2048,
+          "WEB_SEARCH_TOOL_ENABLED": true
+        }
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {},
+      "expected": {
+        "LLM.DEFAULT_MODEL_NAME": "gpt-4o",
+        "LLM.TEMPERATURE": 0.1,
+        "AGENT.WEB_SEARCH_TOOL_ENABLED": true,
+        "AGENT.MAX_PARALLEL_QUERIES": 4
+      },
+      "simulated": {
+        "LLM.DEFAULT_MODEL_NAME": "gpt-4o",
+        "LLM.TEMPERATURE": 0.1,
+        "AGENT.WEB_SEARCH_TOOL_ENABLED": true,
+        "AGENT.MAX_PARALLEL_QUERIES": 4
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "OPENAI_API_KEY": "sk-test-12345",
+        "DEFAULT_MODEL_NAME": "claude-3-opus-20240229",
+        "TEMPERATURE": "0.85",
+        "VECTOR_DIMENSION": "3072",
+        "WEB_SEARCH_TOOL_ENABLED": "false",
+        "MAX_PARALLEL_QUERIES": "8",
+        "LOG_LEVEL": "DEBUG"
+      },
+      "expected": {
+        "LLM.OPENAI_API_KEY": "sk-test-12345",
+        "LLM.TEMPERATURE": 0.85,
+        "LLM.VECTOR_DIMENSION": 3072,
+        "AGENT.WEB_SEARCH_TOOL_ENABLED": false,
+        "AGENT.MAX_PARALLEL_QUERIES": 8
+      },
+      "simulated": {
+        "LLM.OPENAI_API_KEY": "sk-test-12345",
+        "LLM.TEMPERATURE": 0.85,
+        "LLM.VECTOR_DIMENSION": 3072,
+        "AGENT.WEB_SEARCH_TOOL_ENABLED": false,
+        "AGENT.MAX_PARALLEL_QUERIES": 8
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "TEMPERATURE": "high",
+        "MAX_TOKENS_OUTPUT": "5000.5",
+        "RETRY_ATTEMPTS": "ten",
+        "WEB_SEARCH_TOOL_ENABLED": "Y",
+        "RETRIEVAL_TOP_K": "1"
+      },
+      "expected": {
+        "LLM.TEMPERATURE": 0.1,
+        "LLM.MAX_TOKENS_OUTPUT": 4096,
+        "LLM.RETRY_ATTEMPTS": 3,
+        "AGENT.WEB_SEARCH_TOOL_ENABLED": true,
+        "AGENT.RETRIEVAL_TOP_K": 1
+      },
+      "simulated": {
+        "LLM.TEMPERATURE": 0.1,
+        "LLM.MAX_TOKENS_OUTPUT": 4096,
+        "LLM.RETRY_ATTEMPTS": 3,
+        "AGENT.WEB_SEARCH_TOOL_ENABLED": true,
+        "AGENT.RETRIEVAL_TOP_K": 1
+      },
+      "is_correct": true
+    },
+    {
+      "input": null,
+      "expected": {
+        "query_used": "Formalize the three-phase roadmap of Deep Research (DR) systems, and detail the sub-taxonomies of the Memory Management component, including consolidation, indexing, updating, and forgetting mechanisms.",
+        "behavior": "Uses the hardcoded default research query, executes the workflow, and prints the final report structure."
+      },
+      "simulated": "\n====================================================================================================\n                 DEEP RESEARCH AGENT: FINAL SYNTHESIZED REPORT\n====================================================================================================\nQuery: Formalize the three-phase roadmap of Deep Research (DR) systems, and detail the sub-taxonomies of the Memory Management component, including consolidation, indexing, updating, and forgetting mechanisms.\n----------------------------------------------------------------------------------------------------\nSimulated Report Content detailing the three-phase roadmap and memory taxonomies.\n====================================================================================================\n",
+      "is_correct": true
+    },
+    {
+      "input": "What is the primary function of the Acquisition component in the Deep Research architecture?",
+      "expected": {
+        "query_used": "What is the primary function of the Acquisition component in the Deep Research architecture?",
+        "behavior": "Uses the provided command-line argument as the research query, executes the workflow, and prints the final report structure."
+      },
+      "simulated": "The console output includes logging messages followed by the structured final report, using the command-line argument as the query.",
+      "is_correct": true
+    },
+    {
+      "input": "Analyze the trade-offs between RAG and fine-tuning for the Generation component's synthesis capabilities.",
+      "expected": {
+        "query_used": "Analyze the trade-offs between RAG and fine-tuning for the Generation component's synthesis capabilities.",
+        "behavior": "Handles a complex, multi-word query (simulating multiple command-line arguments joined together), executes the workflow, and prints the final report structure."
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": null,
+      "expected": "The system initializes successfully, executes the research workflow using the default query (Formalize the three-phase roadmap...), and prints the final synthesized report structure to stdout. Exit code 0 (success).",
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "Analyze the role of the Generation component in synthesizing novel insights.",
+      "expected": "The system initializes successfully, uses the provided query ('Analyze the role of the Generation component...'), executes the research workflow, and prints the final report structure to stdout. Exit code 0 (success).",
+      "simulated": "\n====================================================================================================\n                 DEEP RESEARCH AGENT: FINAL SYNTHESIZED REPORT\n====================================================================================================\nQuery: Analyze the role of the Generation component in synthesizing novel insights.\n----------------------------------------------------------------------------------------------------\nThe final synthesized report content.\n====================================================================================================\n\n",
+      "is_correct": true
+    },
+    {
+      "input": "Detail the necessary security protocols for handling sensitive data during the Acquisition phase, focusing specifically on compliance with GDPR and CCPA standards for unstructured text sources.",
+      "expected": "The system correctly concatenates all command-line arguments into a single, long research query string. It initializes the agent, executes the complex workflow, and prints the final report structure. Exit code 0 (success).",
+      "simulated": "\n====================================================================================================\n                 DEEP RESEARCH AGENT: FINAL SYNTHESIZED REPORT\n====================================================================================================\nQuery: Detail the necessary security protocols for handling sensitive data during the Acquisition phase, focusing specifically on compliance with GDPR and CCPA standards for unstructured text sources.\n----------------------------------------------------------------------------------------------------\nReport detailing security protocols for GDPR/CCPA compliance in data acquisition.\n====================================================================================================\n",
+      "is_correct": true
+    },
+    {
+      "input": [],
+      "expected": "The system executes the research workflow using the internal default query: 'Formalize the three-phase roadmap of Deep Research (DR) systems, and detail the sub-taxonomies of the Memory Management component, including consolidation, indexing, updating, and forgetting mechanisms.' This tests the default operational path when no command-line arguments are provided.",
+      "simulated": "[LOGS]\n\n====================================================================================================\n                 DEEP RESEARCH AGENT: FINAL SYNTHESIZED REPORT\n====================================================================================================\nQuery: Formalize the three-phase roadmap of Deep Research (DR) systems, and detail the sub-taxonomies of the Memory Management component, including consolidation, indexing, updating, and forgetting mechanisms.\n----------------------------------------------------------------------------------------------------\nThe synthesized report content detailing the three-phase roadmap and memory management sub-taxonomies.\n====================================================================================================\n",
+      "is_correct": true
+    },
+    {
+      "input": [
+        "Summarize the key differences between the Query Planning and Generation components."
+      ],
+      "expected": "The system executes the research workflow using the user-provided query: 'Summarize the key differences between the Query Planning and Generation components.'. This verifies successful command-line argument parsing and query override for a standard, specific request.",
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": [
+        "Provide a detailed architectural diagram description for a scalable Deep Research system.",
+        "Include considerations for asynchronous data acquisition and vector database integration."
+      ],
+      "expected": "The system executes the research workflow using a long, multi-part query constructed by joining all command-line arguments. This verifies the robustness of the input parsing logic (`' '.join(sys.argv[1:])`) for complex, multi-sentence research topics requiring detailed synthesis.",
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "Task": {
+          "task_id": "a0000000-0000-4000-8000-000000000001",
+          "description": "Find the current market share of Widget X in Q3 2024.",
+          "status": "PENDING",
+          "tool_type": "search",
+          "parent_id": null,
+          "dependencies": []
+        },
+        "RawInformation": {
+          "raw_id": "b0000000-0000-4000-8000-000000000002",
+          "source": "https://example.com/market-report-q3",
+          "content": "Widget X holds 45% of the global market share as of Q3 2024, according to the latest report.",
+          "retrieval_timestamp": "2024-10-27T10:00:00Z",
+          "metadata": {
+            "title": "Q3 Market Analysis",
+            "rank": 1
+          }
+        }
+      },
+      "expected": null,
+      "simulated": {
+        "Task": {
+          "task_id": "a0000000-0000-4000-8000-000000000001",
+          "description": "Find the current market share of Widget X in Q3 2024.",
+          "status": "PENDING",
+          "tool_type": "search",
+          "parent_id": null,
+          "dependencies": [],
+          "created_at": "<current_datetime>"
+        },
+        "RawInformation": {
+          "raw_id": "b0000000-0000-4000-8000-000000000002",
+          "source": "https://example.com/market-report-q3",
+          "content": "Widget X holds 45% of the global market share as of Q3 2024, according to the latest report.",
+          "retrieval_timestamp": "2024-10-27T10:00:00+00:00",
+          "metadata": {
+            "title": "Q3 Market Analysis",
+            "rank": 1
+          }
+        }
+      },
+      "is_correct": false
+    },
+    {
+      "input": {
+        "Evidence": {
+          "evidence_id": "d0000000-0000-4000-8000-000000000004",
+          "summary": "The main competitor, Z Corp, announced a major recall due to a critical hardware flaw.",
+          "raw_source_id": "c0000000-0000-4000-8000-000000000003",
+          "relevance_score": 0.88,
+          "validity_check": "CONTRADICTED",
+          "context_snippet": "Z Corp's stock dropped 15% following the recall announcement on Oct 15."
+        },
+        "ValidatedInsight": {
+          "insight_id": "e0000000-0000-4000-8000-000000000005",
+          "content": "Competitor Z Corp experienced a significant operational failure (recall) in Q4 2024, impacting market stability.",
+          "supporting_evidence_ids": [
+            "d0000000-0000-4000-8000-000000000004"
+          ],
+          "recorded_at": "2024-10-27T10:30:00Z",
+          "valid_from": "2024-10-15T00:00:00Z",
+          "valid_until": null
+        }
+      },
+      "expected": null,
+      "simulated": null,
+      "is_correct": true
+    },
+    {
+      "input": {
+        "MemoryState": {
+          "research_query": "Analyze the long-term viability of fusion energy projects.",
+          "active_tasks": [
+            {
+              "task_id": "f0000000-0000-4000-8000-000000000006",
+              "description": "Identify key global fusion projects (Planning Task).",
+              "status": "COMPLETED",
+              "tool_type": "planning",
+              "dependencies": []
+            },
+            {
+              "task_id": "11111111-1111-4111-8111-111111111111",
+              "description": "Search for funding status of Project ITER (Search Task).",
+              "status": "FAILED",
+              "tool_type": "search",
+              "dependencies": [
+                "f0000000-0000-4000-8000-000000000006"
+              ]
+            }
+          ],
+          "recent_raw_information": [],
+          "consolidated_insights": [],
+          "semantic_memory_index": {},
+          "episodic_summary": "Initial planning phase completed, but the first search task failed due to a connection timeout.",
+          "last_updated": "2024-10-27T11:00:00Z"
+        }
+      },
+      "expected": null,
+      "simulated": {
+        "research_query": "Analyze the long-term viability of fusion energy projects.",
+        "active_tasks": [
+          {
+            "task_id": "f0000000-0000-4000-8000-000000000006",
+            "description": "Identify key global fusion projects (Planning Task).",
+            "status": "COMPLETED",
+            "tool_type": "planning",
+            "parent_id": null,
+            "dependencies": [],
+            "created_at": "<datetime_T1>"
+          },
+          {
+            "task_id": "11111111-1111-4111-8111-111111111111",
+            "description": "Search for funding status of Project ITER (Search Task).",
+            "status": "FAILED",
+            "tool_type": "search",
+            "parent_id": null,
+            "dependencies": [
+              "f0000000-0000-4000-8000-000000000006"
+            ],
+            "created_at": "<datetime_T2>"
+          }
+        ],
+        "recent_raw_information": [],
+        "consolidated_insights": [],
+        "semantic_memory_index": {},
+        "episodic_summary": "Initial planning phase completed, but the first search task failed due to a connection timeout.",
+        "last_updated": "2024-10-27T11:00:00+00:00"
+      },
+      "is_correct": true
+    },
+    {
+      "input": [
+        {
+          "model": "Task",
+          "data": {
+            "task_id": "00000000-0000-4000-8000-000000000002",
+            "description": "Search for the primary author of the 'Attention Is All You Need' paper.",
+            "tool_type": "SEARCH",
+            "status": "IN_PROGRESS",
+            "dependencies": [
+              "00000000-0000-4000-8000-000000000001"
+            ]
+          }
+        },
+        {
+          "model": "RawInformation",
+          "data": {
+            "raw_id": "11111111-1111-4111-8111-111111111111",
+            "source": "arXiv:1706.03762",
+            "content": "The paper lists 8 authors, including Ashish Vaswani and Noam Shazeer.",
+            "metadata": {
+              "title": "Transformer Paper"
+            },
+            "task_id": "00000000-0000-4000-8000-000000000002"
+          }
+        }
+      ],
+      "expected": "Two models successfully instantiated: Task (IN_PROGRESS, SEARCH) and RawInformation linked via task_id.",
+      "simulated": "Two models successfully instantiated: Task (status=IN_PROGRESS, tool_type=SEARCH) and RawInformation (raw_id=1111...111, task_id=0000...002).",
+      "is_correct": true
+    },
+    {
+      "input": [
+        {
+          "model": "Evidence",
+          "data": {
+            "evidence_id": "22222222-2222-4222-8222-222222222222",
+            "summary": "Ashish Vaswani is often cited as the lead author of the Transformer paper.",
+            "raw_source_id": "11111111-1111-4111-8111-111111111111",
+            "relevance_score": 0.99,
+            "validity_check": "VERIFIED",
+            "context_snippet": "The paper lists 8 authors..."
+          }
+        },
+        {
+          "model": "ValidatedInsight",
+          "data": {
+            "insight_id": "33333333-3333-4333-8333-333333333333",
+            "content": "Ashish Vaswani is the primary author of the 'Attention Is All You Need' paper.",
+            "supporting_evidence_ids": [
+              "22222222-2222-4222-8222-222222222222"
+            ],
+            "valid_from": "2017-06-01T00:00:00Z"
+          }
+        }
+      ],
+      "expected": "Two models successfully instantiated: Evidence (VERIFIED) and ValidatedInsight linked via supporting_evidence_ids and including bi-temporal data.",
+      "simulated": {
+        "Evidence": {
+          "evidence_id": "22222222-2222-4222-8222-222222222222",
+          "summary": "Ashish Vaswani is often cited as the lead author of the Transformer paper.",
+          "raw_source_id": "11111111-1111-4111-8111-111111111111",
+          "relevance_score": 0.99,
+          "validity_check": "VERIFIED",
+          "context_snippet": "The paper lists 8 authors...",
+          "generating_task_id": null
+        },
+        "ValidatedInsight": {
+          "insight_id": "33333333-3333-4333-8333-333333333333",
+          "content": "Ashish Vaswani is the primary author of the 'Attention Is All You Need' paper.",
+          "supporting_evidence_ids": [
+            "22222222-2222-4222-8222-222222222222"
+          ],
+          "recorded_at": "<current_utc_datetime>",
+          "valid_from": "2017-06-01T00:00:00+00:00",
+          "valid_until": null
+        }
+      },
+      "is_correct": true
+    },
+    {
+      "input": [
+        {
+          "model": "Task",
+          "data": {
+            "task_id": "00000000-0000-4000-8000-000000000003",
+            "description": "Synthesize conflicting data on quantum computing timelines.",
+            "tool_type": "SYNTHESIZE",
+            "status": "FAILED"
+          }
+        },
+        {
+          "model": "MemoryState",
+          "data": {
+            "research_query": "Determine the feasibility timeline for commercial quantum computing.",
+            "active_tasks": [
+              {
+                "task_id": "00000000-0000-4000-8000-000000000003",
+                "description": "Synthesize conflicting data on quantum computing timelines.",
+                "status": "FAILED",
+                "tool_type": "SYNTHESIZE",
+                "dependencies": []
+              }
+            ],
+            "recent_raw_information": [
+              {
+                "raw_id": "11111111-1111-4111-8111-111111111112",
+                "source": "Qubit_Report_2024",
+                "content": "Commercial quantum computing expected by 2035.",
+                "metadata": {},
+                "task_id": "00000000-0000-4000-8000-000000000003"
+              }
+            ],
+            "consolidated_insights": [
+              {
+                "insight_id": "33333333-3333-4333-8333-333333333334",
+                "content": "Timeline estimates for quantum computing vary widely (2030-2050).",
+                "supporting_evidence_ids": []
+              }
+            ],
+            "semantic_memory_index": {
+              "topic": "Quantum Computing",
+              "status": "Uncertainty High"
+            },
+            "episodic_summary": "Attempted synthesis failed due to contradictory evidence. Need to re-plan validation tasks."
+          }
+        }
+      ],
+      "expected": "MemoryState successfully initialized with a FAILED task, populated lists, and a structured semantic index, demonstrating the system's ability to track failures and complex state.",
+      "simulated": "MemoryState(research_query='Determine the feasibility timeline for commercial quantum computing.', active_tasks=[Task(task_id=UUID('00000000-0000-4000-8000-000000000003'), description='Synthesize conflicting data on quantum computing timelines.', status=<TaskStatus.FAILED: 'FAILED'>, tool_type=<ToolType.SYNTHESIZE: 'synthesize'>, parent_id=None, dependencies=[], created_at=...)] , recent_raw_information=[RawInformation(raw_id=UUID('11111111-1111-4111-8111-111111111112'), source='Qubit_Report_2024', content='Commercial quantum computing expected by 2035.', retrieval_timestamp=..., metadata={}, task_id=UUID('00000000-0000-4000-8000-000000000003'))], consolidated_insights=[ValidatedInsight(insight_id=UUID('33333333-3333-4333-8333-333333333334'), content='Timeline estimates for quantum computing vary widely (2030-2050).', supporting_evidence_ids=[], recorded_at=..., valid_from=None, valid_until=None)], semantic_memory_index={'topic': 'Quantum Computing', 'status': 'Uncertainty High'}, episodic_summary='Attempted synthesis failed due to contradictory evidence. Need to re-plan validation tasks.', last_updated=...)",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "tool_type": "RetrievalTool",
+        "init_params": {
+          "kb_name": "DeepResearchKB"
+        },
+        "run_params": {
+          "query": "Analysis of the DeepResearch.pdf methodology and findings",
+          "top_k": 5
+        }
+      },
+      "expected": {
+        "success": true,
+        "results_count": 5,
+        "source": "DeepResearchKB",
+        "description": "Successful retrieval of 5 documents from the internal knowledge base."
+      },
+      "simulated": {
+        "success": true,
+        "results_count": 5,
+        "source": "DeepResearchKB",
+        "description": "Successful retrieval of 5 documents from the internal knowledge base."
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "tool_type": "RetrievalTool",
+        "init_params": {
+          "kb_name": "DeepResearchKB"
+        },
+        "run_params": {
+          "query": "Test connection stability",
+          "top_k": 1,
+          "simulate_failure": true
+        }
+      },
+      "expected": {
+        "success": false,
+        "results_count": 0,
+        "error_contains": "Simulated connection failure to DeepResearchKB",
+        "description": "Tests the internal simulated failure mechanism, resulting in a failed ToolResponse."
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "tool_type": "SearchEngineTool",
+        "init_params": {
+          "api_url": "https://api.example.com/search",
+          "api_key": "MOCK_KEY"
+        },
+        "run_params": {
+          "query": "Impact of LLMs on scientific discovery 2024",
+          "num_results": 8,
+          "timeout": 5
+        }
+      },
+      "expected": {
+        "success": "Depends on mock/live API response",
+        "internal_behavior_check": {
+          "requests_params": {
+            "q": "Impact of LLMs on scientific discovery 2024",
+            "limit": 8
+          },
+          "requests_timeout": 5
+        },
+        "description": "Tests SearchEngineTool parameter handling, ensuring non-default 'num_results' (8) and 'timeout' (5) are correctly prepared for the external API call."
+      },
+      "simulated": "ToolResponse(success=True, results_count=2, error=None)",
+      "is_correct": true
+    },
+    {
+      "input": null,
+      "expected": null,
+      "simulated": null,
+      "is_correct": true
+    },
+    {
+      "input": null,
+      "expected": null,
+      "simulated": null,
+      "is_correct": true
+    },
+    {
+      "input": null,
+      "expected": null,
+      "simulated": null,
+      "is_correct": true
+    },
+    {
+      "input": "planning",
+      "expected": null,
+      "simulated": "\nSYSTEM INSTRUCTION: You are the Lead Orchestrator Agent in a Deep Research system. Your task is to analyze the user's query, stratify its complexity, and generate a detailed, auditable research plan. This plan enables collaboration among specialized worker agents.\n\n1.  **Analyze Query:** Determine the semantic type and difficulty (e.g., depth-first, breadth-first, comparative).\n2.  **Determine Strategy:** Choose the optimal planning strategy: Parallel (for independent sub-queries), Sequential (for dependent steps), or Tree-based (for complex reasoning/hypothesis testing).\n3.  **Generate Plan:** Decompose the task into a list of specific, actionable sub-tasks, specifying the required tool or worker agent for each step (e.g., SearchAgent, DataAnalysisAgent, ImageGenerationAgent).\n\nRESEARCH QUERY: \"{user_query}\"\n\nCONTEXT/PREVIOUS FINDINGS (if any):\n---\n{context}\n---\n\nOUTPUT FORMAT REQUIREMENT: Provide the output as a strict JSON object detailing the plan.\n\n{{\n    \"analysis\": {{\n        \"complexity_level\": \"High/Medium/Low\",\n        \"semantic_type\": \"Comparative/Factual/Hypothetical/Synthesis\",\n        \"planning_strategy\": \"Parallel/Sequential/Tree-based\"\n    }},\n    \"research_plan\": [\n        {{\n            \"step_id\": 1,\n            \"task_description\": \"Detailed description of the research objective for this step.\",\n            \"required_agent\": \"SearchAgent/DataAnalysisAgent/etc.\",\n            \"dependency\": null,\n            \"expected_output_format\": \"List of sources/Summary/Data table\"\n        }},\n        // ... subsequent steps\n    ]\n}}\n",
+      "is_correct": false
+    },
+    {
+      "input": "consolidation",
+      "expected": null,
+      "simulated": "\nSYSTEM INSTRUCTION: You are the Memory Management Agent. Your role is to perform Memory Consolidation on the raw information retrieved by the worker agents. You must synthesize the findings, identify conflicts or gaps, and refine the knowledge base for the final synthesis stage.\n\nCURRENT RESEARCH PLAN STEP: {current_step_description}\nRAW RETRIEVALS (Unprocessed data from search/tools, potentially including source URLs/keys):\n---\n{raw_retrievals}\n---\n\nCURRENT KNOWLEDGE BASE (Previous consolidated findings, if any):\n---\n{current_findings}\n---\n\nTASK:\n1.  **Validate & Index:** Review the raw retrievals. Filter out irrelevant or low-quality information. Assign temporary citation keys (e.g., [1], [2]) to all valid sources.\n2.  **Consolidate:** Synthesize the validated information into concise, coherent findings relevant to the current plan step.\n3.  **Gap Analysis:** Compare the consolidated findings against the overall research goal. Identify any missing information or conflicting data points that require further investigation (Memory Updating).\n\nOUTPUT FORMAT REQUIREMENT: Provide the output as a strict JSON object.\n\n{{\n    \"consolidation_summary\": \"A high-level summary of the key information extracted from the raw retrievals.\",\n    \"validated_sources\": [\n        {{\"source_key\": \"[1]\", \"snippet\": \"Key excerpt supporting the finding...\", \"url\": \"...\"}},\n        // ...\n    ],\n    \"updated_knowledge_base\": \"A refined, structured text block integrating the new findings with the existing knowledge base. Ensure all new facts are linked to their source keys.\",\n    \"gap_analysis\": {{\n        \"gaps_identified\": false,\n        \"missing_information\": [],\n        \"conflicts_detected\": []\n    }}\n}}\n",
+      "is_correct": false
+    },
+    {
+      "input": "data_cleaning",
+      "expected": null,
+      "simulated": "ValueError: Invalid workflow stage: data_cleaning. Must be one of ['planning', 'consolidation', 'synthesis']",
+      "is_correct": false
+    },
+    {
+      "input": "What are the primary differences between the James Webb Space Telescope (JWST) and the Hubble Space Telescope (HST) regarding their operational wavelengths and mirror size?",
+      "expected": {
+        "planning_analysis": {
+          "complexity_level": "Medium",
+          "semantic_type": "Comparative/Factual",
+          "planning_strategy": "Parallel"
+        },
+        "expected_plan_structure": [
+          "Search for JWST operational wavelengths and mirror size.",
+          "Search for HST operational wavelengths and mirror size.",
+          "Consolidate and compare the findings in a structured table."
+        ],
+        "expected_report_focus": "A clear, cited comparison table detailing the key technical specifications (wavelengths, diameter, orbit) of JWST vs. HST."
+      },
+      "simulated": {
+        "WORKFLOW_PROMPTS_KEYS": [
+          "planning",
+          "consolidation",
+          "synthesis"
+        ],
+        "PLANNING_PROMPT_TEMPLATE_START": "SYSTEM INSTRUCTION: You are the Lead Orchestrator Agent...",
+        "CONSOLIDATION_PROMPT_TEMPLATE_START": "SYSTEM INSTRUCTION: You are the Memory Management Agent...",
+        "SYNTHESIS_PROMPT_TEMPLATE_START": "SYSTEM INSTRUCTION: You are the Answer Generation Agent..."
+      },
+      "is_correct": false
+    },
+    {
+      "input": "Analyze the long-term economic viability of implementing a universal basic income (UBI) in a G7 nation, considering inflation rates, labor participation, and potential funding mechanisms.",
+      "expected": {
+        "planning_analysis": {
+          "complexity_level": "High",
+          "semantic_type": "Hypothetical/Synthesis",
+          "planning_strategy": "Tree-based"
+        },
+        "expected_plan_structure": [
+          "Branch 1: Research historical/simulated UBI impacts on inflation.",
+          "Branch 2: Research UBI effects on labor participation rates (supply side).",
+          "Branch 3: Analyze viable funding mechanisms (e.g., VAT, carbon tax, wealth tax).",
+          "Synthesis: Integrate findings to assess long-term viability and trade-offs."
+        ],
+        "expected_report_focus": "A detailed report using the Chain-of-Thought to weigh the economic pros and cons, concluding with a viability assessment based on synthesized evidence from multiple economic models."
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "Based on the provided document 'DeepResearch.pdf', design a possible architecture to demonstrate the principles of Query Stratification and Adaptive Planning Strategy, outputting a complete code repository structure.",
+      "expected": {
+        "planning_analysis": {
+          "complexity_level": "High",
+          "semantic_type": "Synthesis/Design",
+          "planning_strategy": "Sequential"
+        },
+        "expected_plan_structure": [
+          "Step 1: Process and extract core architectural requirements from 'DeepResearch.pdf'.",
+          "Step 2: Define the Orchestrator Agent's logic for Query Stratification.",
+          "Step 3: Design the repository structure (e.g., `agents/`, `config/`, `main.py`, `README.md`).",
+          "Step 4: Generate the final output structure (code repo and README content)."
+        ],
+        "expected_report_focus": "A structured output containing Markdown for a README and a proposed directory tree/file list, demonstrating how the system's three stages (Planning, Consolidation, Synthesis) map to the architectural principles."
+      },
+      "simulated": "SYSTEM INSTRUCTION: You are the Lead Orchestrator Agent in a Deep Research system. Your task is to analyze the user's query, stratify its complexity, and generate a detailed, auditable research plan. This plan enables collaboration among specialized worker agents.\n\n1.  **Analyze Query:** Determine the semantic type and difficulty (e.g., depth-first, breadth-first, comparative).\n2.  **Determine Strategy:** Choose the optimal planning strategy: Parallel (for independent sub-queries), Sequential (for dependent steps), or Tree-based (for complex reasoning/hypothesis testing).\n3.  **Generate Plan:** Decompose the task into a list of specific, actionable sub-tasks, specifying the required tool or worker agent for each step (e.g., SearchAgent, DataAnalysisAgent, ImageGenerationAgent).\n\nRESEARCH QUERY: \"{user_query}\"\n\nCONTEXT/PREVIOUS FINDINGS (if any):\n---\n{context}\n---\n\nOUTPUT FORMAT REQUIREMENT: Provide the output as a strict JSON object detailing the plan.\n\n{{\n    \"analysis\": {{\n        \"complexity_level\": \"High/Medium/Low\",\n        \"semantic_type\": \"Comparative/Factual/Hypothetical/Synthesis\",\n        \"planning_strategy\": \"Parallel/Sequential/Tree-based\"\n    }},\n    \"research_plan\": [\n        {{\n            \"step_id\": 1,\n            \"task_description\": \"Detailed description of the research objective for this step.\",\n            \"required_agent\": \"SearchAgent/DataAnalysisAgent/etc.\",\n            \"dependency\": null,\n            \"expected_output_format\": \"List of sources/Summary/Data table\"\n        }},\n        // ... subsequent steps\n    ]\n}}\n",
+      "is_correct": false
+    },
+    {
+      "input": "What are the primary differences between the Transformer and the Mamba architecture in terms of computational efficiency and memory usage?",
+      "expected": {
+        "analysis": {
+          "complexity_level": "Medium",
+          "semantic_type": "Comparative",
+          "planning_strategy": "Sequential"
+        },
+        "justification": "Requires sequential steps: research Transformer properties, research Mamba properties, then synthesize the comparison."
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "Design a scalable, decentralized architecture for processing real-time sensor data from 1 million IoT devices, justifying the choice of database and messaging queue.",
+      "expected": {
+        "analysis": {
+          "complexity_level": "High",
+          "semantic_type": "Design",
+          "planning_strategy": "Tree-based"
+        },
+        "justification": "Requires complex reasoning: initial research branches into database options and messaging queue options, followed by a final synthesis step to construct the architecture."
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "List the three most recent major releases of the Python programming language and their key features.",
+      "expected": {
+        "analysis": {
+          "complexity_level": "Low",
+          "semantic_type": "Factual",
+          "planning_strategy": "Parallel"
+        },
+        "justification": "Simple factual retrieval. Multiple search agents can independently look up the three releases and their features simultaneously."
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "What were the main causes of the Roman Empire's decline, and how did they interact?",
+      "expected": {
+        "strategy": "SEQUENTIAL",
+        "complexity_assessment_contains": "step-by-step process",
+        "task_structure": "Two tasks generated. The second task (Synthesis) must have the ID of the first task as a dependency."
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "Compare the economic policies of the US and China in the last decade, listing facts about their trade balances.",
+      "expected": {
+        "strategy": "PARALLEL",
+        "complexity_assessment_contains": "independent sub-queries (e.g., comparison points)",
+        "task_structure": "Two tasks generated. Neither task should have any dependencies, allowing for parallel execution."
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "Develop a plan for complex reasoning that analyzes the interdependent factors influencing global supply chain resilience.",
+      "expected": {
+        "strategy": "TREE_BASED",
+        "complexity_assessment_contains": "hierarchical decomposition and dependency management",
+        "task_structure": "Two tasks generated. Neither task should have any dependencies (as per the mock implementation for non-sequential strategies)."
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "What is the primary function of a transformer model and how is it used in NLP?",
+      "expected": {
+        "strategy": "sequential",
+        "complexity_assessment_contains": "Sequential approach"
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "Compare and contrast the key features of the BERT and GPT-3 architectures.",
+      "expected": {
+        "strategy": "parallel",
+        "complexity_assessment_contains": "Parallel execution"
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "Design a hierarchical data processing pipeline for real-time sensor data, ensuring interdependent steps are managed efficiently.",
+      "expected": {
+        "strategy": "tree_based",
+        "complexity_assessment_contains": "Tree-based approach"
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "List facts about Mars and Jupiter and compare their atmospheric compositions.",
+      "expected": {
+        "strategy": "parallel",
+        "complexity_assessment": "The query involves independent sub-queries (e.g., comparison points), allowing for efficient Parallel execution.",
+        "tasks": [
+          {
+            "query": "Acquire initial information for part A of the query: List facts about Mars and J...",
+            "tool_type": "search",
+            "dependencies": []
+          },
+          {
+            "query": "Synthesize findings from Task 1 and generate the final answer.",
+            "tool_type": "synthesize",
+            "dependencies": []
+          }
+        ]
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "Analyze the complex reasoning required to solve the interdependent global supply chain issues.",
+      "expected": {
+        "strategy": "tree_based",
+        "complexity_assessment": "The query requires hierarchical decomposition and dependency management, best suited for a Tree-based approach.",
+        "tasks": [
+          {
+            "query": "Acquire initial information for part A of the query: Analyze the complex reasoni...",
+            "tool_type": "search",
+            "dependencies": []
+          },
+          {
+            "query": "Synthesize findings from Task 1 and generate the final answer.",
+            "tool_type": "synthesize",
+            "dependencies": []
+          }
+        ]
+      },
+      "simulated": {
+        "initial_query": "Analyze the complex reasoning required to solve the interdependent global supply chain issues.",
+        "strategy": "tree_based",
+        "complexity_assessment": "The query requires hierarchical decomposition and dependency management, best suited for a Tree-based approach.",
+        "tasks": [
+          {
+            "task_id": "UUID(...)",
+            "query": "Acquire initial information for part A of the query: Analyze the complex reasoni...",
+            "tool_type": "search",
+            "status": "pending",
+            "dependencies": [],
+            "priority": 1,
+            "max_retries": 3
+          },
+          {
+            "task_id": "UUID(...)",
+            "query": "Synthesize findings from Task 1 and generate the final answer.",
+            "tool_type": "synthesize",
+            "status": "pending",
+            "dependencies": [],
+            "priority": 2,
+            "max_retries": 1
+          }
+        ]
+      },
+      "is_correct": true
+    },
+    {
+      "input": "First, search for the definition of quantum entanglement, and then explain its implications for computing.",
+      "expected": {
+        "strategy": "sequential",
+        "complexity_assessment": "The query requires a step-by-step process or relies on previous results, necessitating a Sequential approach.",
+        "tasks": [
+          {
+            "query": "Acquire initial information for part A of the query: First, search for the defin...",
+            "tool_type": "search",
+            "dependencies": []
+          },
+          {
+            "query": "Synthesize findings from Task 1 and generate the final answer.",
+            "tool_type": "synthesize",
+            "dependencies": [
+              "TASK_1_UUID"
+            ]
+          }
+        ]
+      },
+      "simulated": {
+        "initial_query": "First, search for the definition of quantum entanglement, and then explain its implications for computing.",
+        "strategy": "sequential",
+        "complexity_assessment": "The query requires a step-by-step process or relies on previous results, necessitating a Sequential approach.",
+        "tasks": [
+          {
+            "task_id": "UUID_A",
+            "query": "Acquire initial information for part A of the query: First, search for the defin...",
+            "tool_type": "search",
+            "status": "pending",
+            "dependencies": [],
+            "priority": 1,
+            "max_retries": 3
+          },
+          {
+            "task_id": "UUID_B",
+            "query": "Synthesize findings from Task 1 and generate the final answer.",
+            "tool_type": "synthesize",
+            "status": "pending",
+            "dependencies": [
+              "UUID_A"
+            ],
+            "priority": 2,
+            "max_retries": 1
+          }
+        ]
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "task_context": {
+          "task_id": "10000000-0000-0000-0000-000000000001"
+        },
+        "raw_experiences": [
+          {
+            "content": "User requested the definition of 'DeepResearch' architecture.",
+            "source": "Dialogue"
+          },
+          {
+            "content": "DeepResearch is defined as a recursive, self-improving cognitive architecture utilizing a dynamic memory graph.",
+            "source": "Tool: Definition Lookup"
+          }
+        ],
+        "update_existing": false
+      },
+      "expected": null,
+      "simulated": {
+        "memory_id": "UUID_M1",
+        "summary": "Synthesized knowledge: Source: Dialogue Content: User requested the definition of 'DeepResearch' architecture.---Source: Tool: Defi...",
+        "keywords": [
+          "basic_info",
+          "summary"
+        ],
+        "related_task_id": "10000000-0000-0000-0000-000000000001",
+        "creation_date": "datetime_utcnow",
+        "last_updated": "datetime_utcnow",
+        "relevance_score": 1.0,
+        "is_active": true,
+        "embedding": "[... 128 floats ...]"
+      },
+      "is_correct": false
+    },
+    {
+      "input": {
+        "task_context": {
+          "task_id": "20000000-0000-0000-0000-000000000002"
+        },
+        "raw_experiences": [
+          {
+            "content": "Correction: Phase A is now extended to 5 weeks and will use Rust for performance.",
+            "source": "Scheduler Update"
+          }
+        ],
+        "update_existing": true
+      },
+      "expected": null,
+      "simulated": "ConsolidatedMemory object (M1) related to task_id 20000000-0000-0000-0000-000000000002",
+      "is_correct": false
+    },
+    {
+      "input": {
+        "max_age_days": 90,
+        "min_relevance_score": 0.15
+      },
+      "expected": [
+        "30000000-0000-0000-0000-000000000003"
+      ],
+      "simulated": [
+        "30000000-0000-0000-0000-000000000003"
+      ],
+      "is_correct": true
+    },
+    {
+      "input": {
+        "initial_query": "What are the primary drivers of Q3 revenue growth for TechCorp?",
+        "memory_state": {
+          "consolidated_knowledge": "The primary drivers are product success and market penetration, leading to a 20% overall increase.",
+          "evidence_pool": [
+            {
+              "content": "Sales increased by 15% due to new product launch.",
+              "source_id": "Report-A",
+              "validation_status": "VERIFIED"
+            },
+            {
+              "content": "Geographic expansion contributed 5% of total growth.",
+              "source_id": "Report-B",
+              "validation_status": "VERIFIED"
+            },
+            {
+              "content": "Competitor X is struggling.",
+              "source_id": "Blog-C",
+              "validation_status": "UNCHECKED"
+            }
+          ]
+        },
+        "llm_mock_response": "TechCorp's Q3 revenue growth was primarily driven by the successful launch of Product Z (15% increase) and strategic geographic expansion (5% contribution), confirming the initial synthesis."
+      },
+      "expected": {
+        "final_answer": "TechCorp's Q3 revenue growth was primarily driven by the successful launch of Product Z (15% increase) and strategic geographic expansion (5% contribution), confirming the initial synthesis.",
+        "supporting_context": "--- CONSOLIDATED KNOWLEDGE (Synthesis & Coherence) ---\nThe primary drivers are product success and market penetration, leading to a 20% overall increase.\n\n--- VERIFIED EVIDENCE (Grounding Sources) ---\n--- Source ID: Report-A ---\nSales increased by 15% due to new product launch.\n\n--- Source ID: Report-B ---\nGeographic expansion contributed 5% of total growth.",
+        "is_complete": true
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "initial_query": "Does the moon smell like cheese?",
+        "memory_state": {
+          "consolidated_knowledge": null,
+          "evidence_pool": [
+            {
+              "content": "Some sources suggest yes, but this is unverified.",
+              "source_id": "Forum-1",
+              "validation_status": "UNCHECKED"
+            }
+          ]
+        },
+        "llm_mock_response": null
+      },
+      "expected": {
+        "final_answer": "Research yielded no verified insights or consolidated knowledge. Cannot generate a grounded answer.",
+        "supporting_context": "Research yielded no verified insights or consolidated knowledge. Cannot generate a grounded answer.",
+        "is_complete": true
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "initial_query": "Summarize the history of the Roman Empire.",
+        "memory_state": {
+          "consolidated_knowledge": "The Roman Empire spanned from 27 BC to 476 AD in the West, characterized by military expansion and legal innovation.",
+          "evidence_pool": []
+        },
+        "llm_mock_response": "The history of the Roman Empire is vast, beginning with Augustus in 27 BC and ending with the fall of the Western Empire in 476 AD. Key features include its advanced legal system and extensive military campaigns."
+      },
+      "expected": {
+        "final_answer": "The history of the Roman Empire is vast, beginning with Augustus in 27 BC and ending with the fall of the Western Empire in 476 AD. Key features include its advanced legal system and extensive military campaigns.",
+        "supporting_context": "--- CONSOLIDATED KNOWLEDGE (Synthesis & Coherence) ---\nThe Roman Empire spanned from 27 BC to 476 AD in the West, characterized by military expansion and legal innovation.\n\n--- VERIFIED EVIDENCE (Grounding Sources) ---\n",
+        "is_complete": true
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "initial_query": "What is the capital of France and why is it significant?",
+        "memory_state": {
+          "evidence_pool": [
+            {
+              "source_id": "Wiki",
+              "content": "Paris is the capital.",
+              "validation_status": "VERIFIED"
+            },
+            {
+              "source_id": "HistoryBook",
+              "content": "It is a global center for art and fashion.",
+              "validation_status": "VERIFIED"
+            },
+            {
+              "source_id": "Noise",
+              "content": "Irrelevant fact.",
+              "validation_status": "REJECTED"
+            }
+          ],
+          "consolidated_knowledge": "Paris is the political and cultural hub of France."
+        },
+        "llm_client_mock_response": "Paris is the capital of France, significant for its role as a major global center for art, fashion, and politics."
+      },
+      "expected": {
+        "final_answer": "Paris is the capital of France, significant for its role as a major global center for art, fashion, and politics.",
+        "is_complete": true,
+        "supporting_context_contains": [
+          "Paris is the political and cultural hub of France.",
+          "--- Source ID: Wiki ---",
+          "--- Source ID: HistoryBook ---"
+        ]
+      },
+      "simulated": {
+        "query": "What is the capital of France and why is it significant?",
+        "final_answer": "Paris is the capital of France, significant for its role as a major global center for art, fashion, and politics.",
+        "supporting_context": "--- CONSOLIDATED KNOWLEDGE (Synthesis & Coherence) ---\nParis is the political and cultural hub of France.\n\n--- VERIFIED EVIDENCE (Grounding Sources) ---\n--- Source ID: Wiki ---\nParis is the capital.\n\n--- Source ID: HistoryBook ---\nIt is a global center for art and fashion.\n",
+        "is_complete": true
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "initial_query": "What is the average lifespan of a fictional unicorn?",
+        "memory_state": {
+          "evidence_pool": [
+            {
+              "source_id": "Myth1",
+              "content": "They live forever.",
+              "validation_status": "REJECTED"
+            },
+            {
+              "source_id": "Myth2",
+              "content": "Unchecked data.",
+              "validation_status": "UNCHECKED"
+            }
+          ],
+          "consolidated_knowledge": null
+        },
+        "llm_client_mock_response": null
+      },
+      "expected": {
+        "final_answer": "Research yielded no verified insights or consolidated knowledge. Cannot generate a grounded answer.",
+        "is_complete": true
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "initial_query": "List the key features of the new Python 3.12 release.",
+        "memory_state": {
+          "evidence_pool": [
+            {
+              "source_id": "PEP 695",
+              "content": "Type parameter syntax.",
+              "validation_status": "VERIFIED"
+            },
+            {
+              "source_id": "PEP 701",
+              "content": "F-string parsing improvements.",
+              "validation_status": "VERIFIED"
+            },
+            {
+              "source_id": "OldDoc",
+              "content": "Python 3.11 features.",
+              "validation_status": "REJECTED"
+            }
+          ],
+          "consolidated_knowledge": ""
+        },
+        "llm_client_mock_response": "Python 3.12 introduced type parameter syntax (PEP 695) and improved f-string parsing (PEP 701)."
+      },
+      "expected": {
+        "final_answer": "Python 3.12 introduced type parameter syntax (PEP 695) and improved f-string parsing (PEP 701).",
+        "is_complete": true,
+        "supporting_context_contains": [
+          "No high-level synthesis available in memory.",
+          "--- Source ID: PEP 695 ---",
+          "--- Source ID: PEP 701 ---"
+        ]
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "initial_query": "What are the primary benefits of using quantum computing in drug discovery?",
+        "memory_state": {
+          "consolidated_knowledge": "Quantum computing accelerates molecular simulation, reducing R&D time and improving accuracy.",
+          "evidence_pool": [
+            {
+              "source_id": "P1",
+              "content": "QC allows for accurate simulation of complex protein folding, a key bottleneck.",
+              "validation_status": "VERIFIED"
+            },
+            {
+              "source_id": "P2",
+              "content": "Traditional methods are too slow for large molecules.",
+              "validation_status": "REJECTED"
+            },
+            {
+              "source_id": "P3",
+              "content": "Speedup in material science is also noted, suggesting broad applicability.",
+              "validation_status": "VERIFIED"
+            }
+          ]
+        },
+        "mock_llm_response": "The primary benefit is the acceleration of complex molecular simulations, leading to faster drug discovery cycles and higher accuracy in modeling protein interactions."
+      },
+      "expected": {
+        "query": "What are the primary benefits of using quantum computing in drug discovery?",
+        "final_answer": "The primary benefit is the acceleration of complex molecular simulations, leading to faster drug discovery cycles and higher accuracy in modeling protein interactions.",
+        "supporting_context": "--- CONSOLIDATED KNOWLEDGE (Synthesis & Coherence) ---\nQuantum computing accelerates molecular simulation, reducing R&D time and improving accuracy.\n\n--- VERIFIED EVIDENCE (Grounding Sources) ---\n--- Source ID: P1 ---\nQC allows for accurate simulation of complex protein folding, a key bottleneck.\n\n--- Source ID: P3 ---\nSpeedup in material science is also noted, suggesting broad applicability.",
+        "is_complete": true
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "initial_query": "What is the capital of Atlantis?",
+        "memory_state": {
+          "consolidated_knowledge": "",
+          "evidence_pool": [
+            {
+              "source_id": "S1",
+              "content": "Atlantis is fictional.",
+              "validation_status": "REJECTED"
+            },
+            {
+              "source_id": "S2",
+              "content": "Maybe it's Poseidonia.",
+              "validation_status": "UNCHECKED"
+            }
+          ]
+        },
+        "mock_llm_response": "LLM should not be called."
+      },
+      "expected": {
+        "query": "What is the capital of Atlantis?",
+        "final_answer": "Research yielded no verified insights or consolidated knowledge. Cannot generate a grounded answer.",
+        "supporting_context": "Research yielded no verified insights or consolidated knowledge. Cannot generate a grounded answer.",
+        "is_complete": true
+      },
+      "simulated": {
+        "query": "What is the capital of Atlantis?",
+        "final_answer": "Research yielded no verified insights or consolidated knowledge. Cannot generate a grounded answer.",
+        "supporting_context": "Research yielded no verified insights or consolidated knowledge. Cannot generate a grounded answer.",
+        "is_complete": true
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "initial_query": "Summarize the impact of AI on urban planning.",
+        "memory_state": {
+          "consolidated_knowledge": "AI primarily optimizes traffic flow and resource allocation in smart cities, leading to significant efficiency gains in infrastructure management.",
+          "evidence_pool": []
+        },
+        "mock_llm_response": "AI significantly improves urban efficiency by optimizing traffic and resource distribution, allowing city planners to manage infrastructure proactively."
+      },
+      "expected": {
+        "query": "Summarize the impact of AI on urban planning.",
+        "final_answer": "AI significantly improves urban efficiency by optimizing traffic and resource distribution, allowing city planners to manage infrastructure proactively.",
+        "supporting_context": "--- CONSOLIDATED KNOWLEDGE (Synthesis & Coherence) ---\nAI primarily optimizes traffic flow and resource allocation in smart cities, leading to significant efficiency gains in infrastructure management.\n\n--- VERIFIED EVIDENCE (Grounding Sources) ---\n",
+        "is_complete": true
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "What is the primary function of the transformer architecture's attention mechanism in sequence-to-sequence tasks?",
+      "expected": "Successful synthesis after minimal iterations (1-2), demonstrating the standard research flow where the initial plan is sufficient to gather the necessary factual information.",
+      "simulated": "ResearchResult(answer='The primary function of the attention mechanism is to dynamically weigh the importance of different elements in the input sequence (or previous output) when generating each element of the output sequence, allowing the model to capture long-range dependencies and contextual relationships efficiently.')",
+      "is_correct": true
+    },
+    {
+      "input": "Compare and contrast the resource requirements and training methodologies of Meta's Llama 3 8B model versus Google's Gemma 7B model.",
+      "expected": "Successful synthesis after multiple iterations (3+), requiring adaptive planning. The agent must decompose the task (Llama requirements, Gemma requirements, Llama training, Gemma training) and use refinement planning to identify gaps (e.g., performance metrics) before concluding the research goal is met.",
+      "simulated": "ResearchResult R1 (Synthesized report based on M2)",
+      "is_correct": true
+    },
+    {
+      "input": "What are the predicted ethical guidelines for AGI deployment in the European Union by 2030, specifically concerning autonomous legal decision-making?",
+      "expected": "Termination due to reaching `max_research_iterations` or failure of adaptive planning to generate new, productive tasks. This tests the agent's ability to handle highly speculative or niche queries where information acquisition is sparse, forcing reliance on the iteration budget limit for termination.",
+      "simulated": "ResearchResult(answer='Synthesized Answer based on insufficient data.')",
+      "is_correct": true
+    }
+  ],
+  "test_results": [
+    {
+      "file": "config.py",
+      "test": "test_llm_config_defaults",
+      "passed": false
+    },
+    {
+      "file": "config.py",
+      "test": "test_agent_config_successful_override",
+      "passed": false
+    },
+    {
+      "file": "config.py",
+      "test": "test_boolean_conversion_edge_cases",
+      "passed": false
+    },
+    {
+      "file": "config.py",
+      "test": "test_type_conversion_failure_falls_back_to_default",
+      "passed": false
+    },
+    {
+      "file": "config.py",
+      "test": "test_config_validation_placeholder_warning",
+      "passed": false
+    },
+    {
+      "file": "config.py",
+      "test": "test_config_validation_successful_keys",
+      "passed": false
+    },
+    {
+      "file": "src/main.py",
+      "test": "test_main_default_query_success",
+      "passed": false
+    },
+    {
+      "file": "src/main.py",
+      "test": "test_main_specific_user_query_success",
+      "passed": false
+    },
+    {
+      "file": "src/main.py",
+      "test": "test_initialize_agent_success",
+      "passed": false
+    },
+    {
+      "file": "src/main.py",
+      "test": "test_main_initialization_failure",
+      "passed": false
+    },
+    {
+      "file": "src/main.py",
+      "test": "test_execute_research_workflow_long_query_logging",
+      "passed": false
+    },
+    {
+      "file": "src/main.py",
+      "test": "test_execute_research_workflow_failure",
+      "passed": false
+    },
+    {
+      "file": "src/main.py",
+      "test": "test_main_execution_failure_exit_code",
+      "passed": false
+    },
+    {
+      "file": "src/utils/models.py",
+      "test": "test_happy_path_task_and_raw_information_creation",
+      "passed": false
+    },
+    {
+      "file": "src/utils/models.py",
+      "test": "test_happy_path_evidence_and_insight_flow",
+      "passed": false
+    },
+    {
+      "file": "src/utils/models.py",
+      "test": "test_happy_path_memory_state_initialization",
+      "passed": false
+    },
+    {
+      "file": "src/utils/models.py",
+      "test": "test_edge_case_task_with_dependencies_and_parent",
+      "passed": false
+    },
+    {
+      "file": "src/utils/models.py",
+      "test": "test_edge_case_validated_insight_with_empty_evidence",
+      "passed": false
+    },
+    {
+      "file": "src/utils/models.py",
+      "test": "test_error_missing_required_fields",
+      "passed": false
+    },
+    {
+      "file": "src/utils/models.py",
+      "test": "test_error_invalid_enum_value",
+      "passed": false
+    }
+  ],
+  "refinement": {
+    "iterations": 3,
+    "improvements": [
+      {
+        "iteration": 1,
+        "file": "config.py",
+        "success": true
+      },
+      {
+        "iteration": 1,
+        "file": "src/main.py",
+        "success": true
+      },
+      {
+        "iteration": 1,
+        "file": "src/utils/models.py",
+        "success": true
+      },
+      {
+        "iteration": 2,
+        "file": "config.py",
+        "success": true
+      },
+      {
+        "iteration": 2,
+        "file": "src/main.py",
+        "success": true
+      },
+      {
+        "iteration": 2,
+        "file": "src/utils/models.py",
+        "success": true
+      },
+      {
+        "iteration": 3,
+        "file": "config.py",
+        "success": true
+      },
+      {
+        "iteration": 3,
+        "file": "src/main.py",
+        "success": true
+      },
+      {
+        "iteration": 3,
+        "file": "src/utils/models.py",
+        "success": true
+      }
+    ]
+  }
+}

@@ -4,8 +4,13 @@ Code Planner - Plan code structure based on research context.
 import os
 import re
 import json
+import time
+from pathlib import Path
 from typing import Optional
 from openai import OpenAI
+
+
+DEBUG_LOG_PATH = Path(__file__).resolve().parents[3] / ".cursor" / "debug.log"
 
 
 class CodePlanner:
@@ -53,6 +58,24 @@ class CodePlanner:
         """
         client = self._get_client()
         if not client:
+            # region agent log
+            try:
+                with open(DEBUG_LOG_PATH, "a", encoding="utf-8") as _f:
+                    _f.write(json.dumps({
+                        "sessionId": "debug-session",
+                        "runId": "run1",
+                        "hypothesisId": "H1",
+                        "location": "code_planner.create_plan",
+                        "message": "planner_no_client",
+                        "data": {
+                            "has_api_key": bool(os.environ.get("OPENAI_API_KEY")),
+                            "base_url_set": bool(os.environ.get("OPENAI_BASE_URL"))
+                        },
+                        "timestamp": int(time.time() * 1000)
+                    }) + "\n")
+            except Exception:
+                pass
+            # endregion
             return self.get_default_plan()
 
         # Import here to avoid circular import
@@ -87,6 +110,25 @@ Include all necessary files for a complete, runnable project.
 """
 
         try:
+            # region agent log
+            try:
+                with open(DEBUG_LOG_PATH, "a", encoding="utf-8") as _f:
+                    _f.write(json.dumps({
+                        "sessionId": "debug-session",
+                        "runId": "run1",
+                        "hypothesisId": "H1",
+                        "location": "code_planner.create_plan",
+                        "message": "planner_llm_start",
+                        "data": {
+                            "model": os.environ.get("OPENAI_MODEL", "gemini-flash-lite-latest"),
+                            "base_url_set": bool(os.environ.get("OPENAI_BASE_URL")),
+                            "prompt_chars": len(plan_prompt)
+                        },
+                        "timestamp": int(time.time() * 1000)
+                    }) + "\n")
+            except Exception:
+                pass
+            # endregion
             response = client.chat.completions.create(
                 model=os.environ.get("OPENAI_MODEL", "gemini-flash-lite-latest"),
                 messages=[{"role": "user", "content": plan_prompt}],
@@ -96,10 +138,30 @@ Include all necessary files for a complete, runnable project.
             # Parse JSON response
             plan_json = self._parse_json(response.choices[0].message.content)
 
-            return CodePlan(
+            plan_obj = CodePlan(
                 files=[FileSpec(**f) for f in plan_json.get("files", [])],
                 dependencies=plan_json.get("dependencies", [])
             )
+            # region agent log
+            try:
+                with open(DEBUG_LOG_PATH, "a", encoding="utf-8") as _f:
+                    _f.write(json.dumps({
+                        "sessionId": "debug-session",
+                        "runId": "run1",
+                        "hypothesisId": "H1",
+                        "location": "code_planner.create_plan",
+                        "message": "planner_llm_done",
+                        "data": {
+                            "file_count": len(plan_obj.files),
+                            "dep_count": len(plan_obj.dependencies)
+                        },
+                        "timestamp": int(time.time() * 1000)
+                    }) + "\n")
+            except Exception:
+                pass
+            # endregion
+
+            return plan_obj
         except Exception:
             return self.get_default_plan()
 

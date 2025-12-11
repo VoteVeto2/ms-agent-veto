@@ -272,6 +272,25 @@ Output format:
         if not client:
             return code, all_results
 
+        # region agent log
+        try:
+            with open(DEBUG_LOG_PATH, "a", encoding="utf-8") as _f:
+                _f.write(json.dumps({
+                    "sessionId": "debug-session",
+                    "runId": "run1",
+                    "hypothesisId": "H3",
+                    "location": "simulation_debugger.debug_with_simulation",
+                    "message": "simulation_start",
+                    "data": {
+                        "max_iterations": max_iterations,
+                        "code_preview": code[:80]
+                    },
+                    "timestamp": int(time.time() * 1000)
+                }) + "\n")
+        except Exception:
+            pass
+        # endregion
+
         for iteration in range(max_iterations):
             # Generate test inputs
             test_inputs = await self.generate_test_inputs(task_description, code)

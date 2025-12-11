@@ -1,0 +1,43 @@
+{
+  "generated_at": "2025-12-10T22:22:40.794845",
+  "file_count": 7,
+  "files": [
+    {
+      "path": "src/__init__.py",
+      "size": 30,
+      "type": "python"
+    },
+    {
+      "path": "src/main.py",
+      "size": 134,
+      "type": "python"
+    },
+    {
+      "path": "src/utils.py",
+      "size": 135,
+      "type": "python"
+    },
+    {
+      "path": "tests/__init__.py",
+      "size": 30,
+      "type": "python"
+    },
+    {
+      "path": "tests/test_main.py",
+      "size": 128,
+      "type": "python"
+    },
+    {
+      "path": "requirements.txt",
+      "size": 22,
+      "type": "text"
+    },
+    {
+      "path": "README.md",
+      "size": 359,
+      "type": "markdown"
+    }
+  ],
+  "metrics_included": true,
+  "total_size": 838
+}

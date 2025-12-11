@@ -1,0 +1,573 @@
+{
+  "total_debug_iterations": 4,
+  "simulation_results": [
+    {
+      "input": null,
+      "expected": {
+        "base_url": "https://api.example.com/v1",
+        "auth_token": null,
+        "timeout": 30.0
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": null,
+      "expected": {
+        "base_url": "http://test.env.com",
+        "auth_token": "ENV_SECRET_XYZ",
+        "timeout": 30.0
+      },
+      "simulated": "--- Config 1 (Env Loaded) ---\nBase URL: https://api.example.com/v1\nAuth Token: test_env_token_12345\nTimeout: 30.0s\n\n--- Config 2 (Explicitly Set) ---\nBase URL: https://production.service.net/api/v2\nAuth Token: test_env_token_12345\nTimeout: 30.0s\n\nValidation Check Passed (Caught Expected Error): API Base URL is not configured. Set environment variable 'API_BASE_URL' or configure in code.",
+      "is_correct": false
+    },
+    {
+      "input": null,
+      "expected": {
+        "base_url": "https://new.config.net",
+        "auth_token": "ArgToken123",
+        "timeout": 30.0
+      },
+      "simulated": "--- Config 1 (Env Loaded) ---\nBase URL: https://api.example.com/v1\nAuth Token: test_env_token_12345\nTimeout: 30.0s\n\n--- Config 2 (Explicitly Set) ---\nBase URL: https://production.service.net/api/v2\nAuth Token: test_env_token_12345\n\nValidation Check Passed (Caught Expected Error): API Base URL is not configured. Set environment variable 'API_BASE_URL' or configure in code.",
+      "is_correct": false
+    },
+    {
+      "input": {
+        "model": "ResearchRequest",
+        "data": {
+          "user_prompt": "What are the primary differences between quantum computing and classical computing, and cite three recent sources?",
+          "user_id": "user_49382A",
+          "max_retries": 5
+        }
+      },
+      "expected": "This input is designed to test a standard, fully specified ResearchRequest.",
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "model": "ResearchRequest",
+        "data": {
+          "user_prompt": "Define photosynthesis."
+        }
+      },
+      "expected": "This input tests the minimal required fields for ResearchRequest, relying on default values for optional fields (user_id=None, max_retries=3).",
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "model": "ResearchResponse",
+        "data": {
+          "status": "SUCCESS",
+          "query_plan": {
+            "query_id": "QID-20240515-001",
+            "initial_query": "Explain the impact of recent climate agreements.",
+            "plan_steps": [
+              "Search for 'recent global climate agreements 2023 2024'",
+              "Filter results for official government/NGO sources",
+              "Synthesize impact summary"
+            ],
+            "planning_strategy": "Tree-based",
+            "confidence_score": 0.92
+          },
+          "evidence_records": [
+            {
+              "evidence_id": "EVID-001A",
+              "source": "Search Engine (Google)",
+              "content": "The Paris Agreement aims to limit global warming to well below 2 degrees Celsius above pre-industrial levels.",
+              "relevance_score": 0.95,
+              "timestamp": 1715788800.0,
+              "metadata": {
+                "url": "example.com/paris"
+              }
+            }
+          ],
+          "final_answer": {
+            "query_id": "QID-20240515-001",
+            "answer_text": "The primary impact of recent climate agreements, such as the Paris Agreement, is establishing legally binding targets for signatory nations to reduce greenhouse gas emissions.",
+            "supporting_evidence_ids": [
+              "EVID-001A"
+            ],
+            "generation_method": "Direct Synthesis",
+            "latency_ms": 1250
+          },
+          "error_message": null
+        }
+      },
+      "expected": "This input tests a complete, successful ResearchResponse object, ensuring all nested Pydantic models (QueryPlan, EvidenceRecord, FinalAnswer) are correctly structured.",
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "user_prompt": "What are the primary differences between quantum entanglement and quantum superposition?",
+        "user_id": "user_4921A",
+        "max_retries": 5
+      },
+      "expected": {
+        "status": "SUCCESS",
+        "query_plan": {
+          "query_id": "test_query_123",
+          "initial_query": "What are the primary differences between quantum entanglement and quantum superposition?",
+          "plan_steps": [
+            "Define Superposition",
+            "Define Entanglement",
+            "Compare definitions",
+            "Synthesize answer"
+          ],
+          "planning_strategy": "Sequential",
+          "confidence_score": 0.95
+        },
+        "evidence_records": [
+          {
+            "evidence_id": "EVID_001",
+            "source": "Physics_KB",
+            "content": "Superposition allows a quantum system to exist in multiple states simultaneously.",
+            "relevance_score": 0.9,
+            "timestamp": 1678886400.0,
+            "metadata": {
+              "topic": "Quantum Basics"
+            }
+          }
+        ],
+        "final_answer": {
+          "query_id": "test_query_123",
+          "answer_text": "Quantum superposition describes a single particle existing in multiple states at once, whereas entanglement describes a correlation between two or more particles.",
+          "supporting_evidence_ids": [
+            "EVID_001"
+          ],
+          "generation_method": "Direct Synthesis",
+          "latency_ms": 450
+        },
+        "error_message": null
+      },
+      "simulated": {
+        "status": "SUCCESS",
+        "query_plan": {
+          "query_id": "test_query_123",
+          "initial_query": "What are the primary differences between quantum entanglement and quantum superposition?",
+          "plan_steps": [
+            "Define Superposition",
+            "Define Entanglement",
+            "Compare definitions",
+            "Synthesize answer"
+          ],
+          "planning_strategy": "Sequential",
+          "confidence_score": 0.95
+        },
+        "evidence_records": [
+          {
+            "evidence_id": "EVID_001",
+            "source": "Physics_KB",
+            "content": "Superposition allows a quantum system to exist in multiple states simultaneously.",
+            "relevance_score": 0.9,
+            "timestamp": 1678886400.0,
+            "metadata": {
+              "topic": "Quantum Basics"
+            }
+          }
+        ],
+        "final_answer": {
+          "query_id": "test_query_123",
+          "answer_text": "Quantum superposition describes a single particle existing in multiple states at once, whereas entanglement describes a correlation between two or more particles.",
+          "supporting_evidence_ids": [
+            "EVID_001"
+          ],
+          "generation_method": "Direct Synthesis",
+          "latency_ms": 450
+        },
+        "error_message": null
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "user_prompt": "Tell me a short story about a robot.",
+        "user_id": null,
+        "max_retries": 0
+      },
+      "expected": {
+        "status": "SUCCESS",
+        "query_plan": {
+          "query_id": "test_query_minimal_456",
+          "initial_query": "Tell me a short story about a robot.",
+          "plan_steps": [
+            "Generate creative narrative outline",
+            "Draft story",
+            "Review for length"
+          ],
+          "planning_strategy": "Tree-based",
+          "confidence_score": 0.75
+        },
+        "evidence_records": [],
+        "final_answer": {
+          "query_id": "test_query_minimal_456",
+          "answer_text": "Unit 734 looked at the sunset, a phenomenon it was programmed to observe but not feel. It decided to write a poem instead.",
+          "supporting_evidence_ids": [],
+          "generation_method": "Direct Synthesis",
+          "latency_ms": 120
+        },
+        "error_message": null
+      },
+      "simulated": {
+        "status": "SUCCESS",
+        "query_plan": {
+          "query_id": "test_query_minimal_456",
+          "initial_query": "Tell me a short story about a robot.",
+          "plan_steps": [
+            "Generate creative narrative outline",
+            "Draft story",
+            "Review for length"
+          ],
+          "planning_strategy": "Tree-based",
+          "confidence_score": 0.75
+        },
+        "evidence_records": [],
+        "final_answer": {
+          "query_id": "test_query_minimal_456",
+          "answer_text": "Unit 734 looked at the sunset, a phenomenon it was programmed to observe but not feel. It decided to write a poem instead.",
+          "supporting_evidence_ids": [],
+          "generation_method": "Direct Synthesis",
+          "latency_ms": 120
+        },
+        "error_message": null
+      },
+      "is_correct": true
+    },
+    {
+      "input": {
+        "user_prompt": "What is the capital of France?",
+        "user_id": "temp_session_789",
+        "max_retries": 10
+      },
+      "expected": {
+        "status": "SUCCESS",
+        "query_plan": {
+          "query_id": "test_query_simple_789",
+          "initial_query": "What is the capital of France?",
+          "plan_steps": [
+            "Direct Knowledge Lookup (Paris)"
+          ],
+          "planning_strategy": "Zero-Shot",
+          "confidence_score": 1.0
+        },
+        "evidence_records": [
+          {
+            "evidence_id": "EVID_GEO_001",
+            "source": "Internal Knowledge Base",
+            "content": "The capital of France is Paris.",
+            "relevance_score": 1.0,
+            "timestamp": 1678886500.0,
+            "metadata": {}
+          }
+        ],
+        "final_answer": {
+          "query_id": "test_query_simple_789",
+          "answer_text": "The capital of France is Paris.",
+          "supporting_evidence_ids": [
+            "EVID_GEO_001"
+          ],
+          "generation_method": "Direct Synthesis",
+          "latency_ms": 50
+        },
+        "error_message": null
+      },
+      "simulated": {
+        "status": "SUCCESS",
+        "query_plan": {
+          "query_id": "test_query_simple_789",
+          "initial_query": "What is the capital of France?",
+          "plan_steps": [
+            "Direct Knowledge Lookup (Paris)"
+          ],
+          "planning_strategy": "Zero-Shot",
+          "confidence_score": 1.0
+        },
+        "evidence_records": [
+          {
+            "evidence_id": "EVID_GEO_001",
+            "source": "Internal Knowledge Base",
+            "content": "The capital of France is Paris.",
+            "relevance_score": 1.0,
+            "timestamp": 1678886500.0,
+            "metadata": {}
+          }
+        ],
+        "final_answer": {
+          "query_id": "test_query_simple_789",
+          "answer_text": "The capital of France is Paris.",
+          "supporting_evidence_ids": [
+            "EVID_GEO_001"
+          ],
+          "generation_method": "Direct Synthesis",
+          "latency_ms": 50
+        },
+        "error_message": null
+      },
+      "is_correct": true
+    },
+    {
+      "input": null,
+      "expected": null,
+      "simulated": "Initialized client targeting: http://localhost:8000\n",
+      "is_correct": true
+    },
+    {
+      "input": null,
+      "expected": null,
+      "simulated": "Initialized client targeting: http://localhost:8000",
+      "is_correct": true
+    },
+    {
+      "input": null,
+      "expected": null,
+      "simulated": "Initialized client targeting: http://localhost:8000\n",
+      "is_correct": true
+    },
+    {
+      "input": "What are the primary ethical considerations for deploying large language models in sensitive government applications?",
+      "expected": "{'status': 'success', 'data': [...]}",
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "",
+      "expected": null,
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "Define quantum entanglement.",
+      "expected": "{'status': 'success', 'data': [...]}",
+      "simulated": {
+        "status": "success",
+        "data": [
+          {
+            "source": "Physics Textbook",
+            "definition": "A physical phenomenon that occurs when a pair or group of particles are generated, interact, or share spatial proximity in such a way that the quantum state of each particle cannot be described independently of the state of the others, even when the particles are separated by a large distance."
+          }
+        ]
+      },
+      "is_correct": true
+    },
+    {
+      "input": "What are the primary computational bottlenecks in scaling large language models (LLMs) beyond 1 trillion parameters, and how do current hardware accelerators address these limitations?",
+      "expected": {
+        "status": "success",
+        "data": [
+          {
+            "concept": "Scaling Bottlenecks",
+            "detail": "Memory Bandwidth"
+          },
+          {
+            "concept": "Hardware Solutions",
+            "detail": "HBM3e and Optical Interconnects"
+          }
+        ]
+      },
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": "",
+      "expected": null,
+      "simulated": "Warnings indicating Test Case 1 failed because the client returned None, and Test Case 2 completed successfully (by returning None early).",
+      "is_correct": true
+    },
+    {
+      "input": "List all known quantum computing algorithms.",
+      "expected": null,
+      "simulated": null,
+      "is_correct": true
+    },
+    {
+      "input": "Analyze the primary computational bottlenecks in scaling large language models (LLMs) beyond 1 trillion parameters, and how do current hardware accelerators address these limitations?",
+      "expected": null,
+      "simulated": "Demonstration (Test Case 1) completed with no valid result.",
+      "is_correct": true
+    },
+    {
+      "input": "   ",
+      "expected": null,
+      "simulated": "Warnings and Errors logged during execution, followed by:\nWARNING:__main__:Demonstration (Test Case 1) completed with no valid result.\nWARNING:__main__:Demonstration (Test Case 2) completed with no valid result (Expected for empty query).",
+      "is_correct": true
+    },
+    {
+      "input": "What are the historical trends in quantum computing research funding over the last decade?",
+      "expected": {
+        "status": "success",
+        "data": [
+          {
+            "concept": "Mock Data",
+            "detail": "Mock Detail"
+          }
+        ]
+      },
+      "simulated": null,
+      "is_correct": false
+    }
+  ],
+  "test_results": [
+    {
+      "file": "src/config.py",
+      "test": "test_happy_path_defaults_only",
+      "passed": false
+    },
+    {
+      "file": "src/config.py",
+      "test": "test_happy_path_environment_override",
+      "passed": false
+    },
+    {
+      "file": "src/config.py",
+      "test": "test_happy_path_constructor_override",
+      "passed": false
+    },
+    {
+      "file": "src/config.py",
+      "test": "test_edge_case_empty_string_base_url_allowed_in_constructor",
+      "passed": false
+    },
+    {
+      "file": "src/config.py",
+      "test": "test_edge_case_timeout_zero_or_negative",
+      "passed": false
+    },
+    {
+      "file": "src/config.py",
+      "test": "test_error_handling_missing_base_url_no_defaults",
+      "passed": false
+    },
+    {
+      "file": "src/config.py",
+      "test": "test_property_type_safety_timeout_is_float",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_research_response_happy_path_complete",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_research_response_happy_path_minimal_success",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_research_response_partial_success_with_error",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_edge_case_max_retries_at_zero",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_edge_case_confidence_score_boundaries",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_error_validation_missing_required_field_in_response",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_error_validation_invalid_float_range_in_evidence",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_error_validation_extra_field_in_response",
+      "passed": false
+    },
+    {
+      "file": "src/client.py",
+      "test": "test_submit_query_success",
+      "passed": false
+    },
+    {
+      "file": "src/client.py",
+      "test": "test_get_status_completed",
+      "passed": false
+    },
+    {
+      "file": "src/client.py",
+      "test": "test_retrieve_results_success",
+      "passed": false
+    },
+    {
+      "file": "src/client.py",
+      "test": "test_edge_case_submit_with_empty_metadata",
+      "passed": false
+    },
+    {
+      "file": "src/client.py",
+      "test": "test_edge_case_get_status_missing_fields",
+      "passed": false
+    },
+    {
+      "file": "src/client.py",
+      "test": "test_error_handling_http_error_404_on_status",
+      "passed": false
+    },
+    {
+      "file": "src/client.py",
+      "test": "test_error_handling_connection_error",
+      "passed": false
+    }
+  ],
+  "refinement": {
+    "iterations": 3,
+    "improvements": [
+      {
+        "iteration": 1,
+        "file": "src/models.py",
+        "success": true
+      },
+      {
+        "iteration": 1,
+        "file": "src/config.py",
+        "success": true
+      },
+      {
+        "iteration": 1,
+        "file": "src/client.py",
+        "success": true
+      },
+      {
+        "iteration": 2,
+        "file": "src/models.py",
+        "success": true
+      },
+      {
+        "iteration": 2,
+        "file": "src/config.py",
+        "success": true
+      },
+      {
+        "iteration": 2,
+        "file": "src/client.py",
+        "success": true
+      },
+      {
+        "iteration": 3,
+        "file": "src/models.py",
+        "success": true
+      },
+      {
+        "iteration": 3,
+        "file": "src/config.py",
+        "success": true
+      },
+      {
+        "iteration": 3,
+        "file": "src/client.py",
+        "success": true
+      }
+    ]
+  }
+}

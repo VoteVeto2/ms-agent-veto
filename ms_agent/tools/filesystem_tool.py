@@ -299,7 +299,7 @@ class FileSystemTool(ToolBase):
             if dirname:
                 os.makedirs(
                     os.path.join(self.output_dir, dirname), exist_ok=True)
-            with open(os.path.join(self.output_dir, path), 'w') as f:
+            with open(os.path.join(self.output_dir, path), 'w', encoding='utf-8') as f:
                 f.write(content)
             return f'Save file <{path}> successfully.'
         except Exception as e:
@@ -428,7 +428,7 @@ class FileSystemTool(ToolBase):
                         f'Set allow_read_all_files=true in config to enable.')
                     continue
 
-                with open(target_path_real, 'r') as f:
+                with open(target_path_real, 'r', encoding='utf-8') as f:
                     if use_line_range:
                         # Read specific line range
                         lines = f.readlines()

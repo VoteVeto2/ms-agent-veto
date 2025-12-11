@@ -12,6 +12,9 @@ This module provides code generation capabilities using:
 
 import os
 import sys
+import json
+import time
+from pathlib import Path
 from typing import Dict, Tuple, TYPE_CHECKING
 
 # Add parent dir to path for contracts import
@@ -26,6 +29,9 @@ from .readme_generator import ReadmeGenerator
 
 if TYPE_CHECKING:
     from contracts import ResearchContext
+
+
+DEBUG_LOG_PATH = Path(__file__).resolve().parents[3] / ".cursor" / "debug.log"
 
 
 async def generate_repository(
@@ -56,6 +62,24 @@ async def generate_repository(
 
     # 1. Create code plan
     planner = CodePlanner()
+    # region agent log
+    try:
+        with open(DEBUG_LOG_PATH, "a", encoding="utf-8") as _f:
+            _f.write(json.dumps({
+                "sessionId": "debug-session",
+                "runId": "run1",
+                "hypothesisId": "H1",
+                "location": "codegen.generate_repository",
+                "message": "plan_start",
+                "data": {
+                    "use_simulation_debug": use_simulation_debug,
+                    "use_auto_tests": use_auto_tests
+                },
+                "timestamp": int(time.time() * 1000)
+            }) + "\n")
+    except Exception:
+        pass
+    # endregion
     code_plan = await planner.create_plan(prompt, research_context)
 
     if not code_plan.files:

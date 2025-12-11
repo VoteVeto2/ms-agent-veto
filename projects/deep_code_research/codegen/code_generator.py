@@ -60,6 +60,26 @@ class CodeGenerator:
             Generated code as string
         """
         client = self._get_client()
+        # region agent log
+        try:
+            with open(DEBUG_LOG_PATH, "a", encoding="utf-8") as _f:
+                _f.write(json.dumps({
+                    "sessionId": "debug-session",
+                    "runId": "run1",
+                    "hypothesisId": "H2",
+                    "location": "code_generator.generate_file",
+                    "message": "generator_client_status",
+                    "data": {
+                        "file_path": file_spec.path,
+                        "client_available": bool(client),
+                        "model": os.environ.get("OPENAI_MODEL", "gemini-flash-lite-latest"),
+                        "base_url_set": bool(os.environ.get("OPENAI_BASE_URL"))
+                    },
+                    "timestamp": int(time.time() * 1000)
+                }) + "\n")
+        except Exception:
+            pass
+        # endregion
         if not client:
             return self._get_default_code(file_spec)
 
@@ -143,13 +163,50 @@ Output ONLY the code, no explanations.
 """
 
         try:
+            # region agent log
+            try:
+                with open(DEBUG_LOG_PATH, "a", encoding="utf-8") as _f:
+                    _f.write(json.dumps({
+                        "sessionId": "debug-session",
+                        "runId": "run1",
+                        "hypothesisId": "H2",
+                        "location": "code_generator.generate_file",
+                        "message": "generator_llm_start",
+                        "data": {
+                            "file_path": file_spec.path,
+                            "prompt_chars": len(gen_prompt)
+                        },
+                        "timestamp": int(time.time() * 1000)
+                    }) + "\n")
+            except Exception:
+                pass
+            # endregion
             response = client.chat.completions.create(
                 model=os.environ.get("OPENAI_MODEL", "gemini-flash-lite-latest"),
                 messages=[{"role": "user", "content": gen_prompt}],
                 temperature=0.3
             )
 
-            return self._extract_code(response.choices[0].message.content)
+            code_out = self._extract_code(response.choices[0].message.content)
+            # region agent log
+            try:
+                with open(DEBUG_LOG_PATH, "a", encoding="utf-8") as _f:
+                    _f.write(json.dumps({
+                        "sessionId": "debug-session",
+                        "runId": "run1",
+                        "hypothesisId": "H2",
+                        "location": "code_generator.generate_file",
+                        "message": "generator_llm_done",
+                        "data": {
+                            "file_path": file_spec.path,
+                            "code_length": len(code_out)
+                        },
+                        "timestamp": int(time.time() * 1000)
+                    }) + "\n")
+            except Exception:
+                pass
+            # endregion
+            return code_out
         except Exception:
             return self._get_default_code(file_spec)
 

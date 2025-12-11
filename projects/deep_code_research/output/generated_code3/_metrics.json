@@ -1,0 +1,345 @@
+{
+  "total_debug_iterations": 5,
+  "simulation_results": [
+    {
+      "input": {
+        "user_query": "What are the primary economic drivers behind the adoption rate of decentralized autonomous organizations (DAOs) in Q3 2024?",
+        "max_iterations": 25
+      },
+      "expected": "Validation Successful (DeepResearchRequest)",
+      "simulated": "Request Model Validated Successfully.\n\nResponse Model Constructed Successfully.",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "user_query": "Compare and contrast quantum annealing vs. gate-based quantum computing for solving NP-hard optimization problems.",
+        "max_iterations": 50,
+        "initial_context": "Focus only on publicly available benchmarks from IBM and Google within the last 18 months.",
+        "evaluation_criteria": {
+          "required_sources_count": 5,
+          "required_depth_level": "High",
+          "must_include_comparison_table": true
+        }
+      },
+      "expected": "Validation Successful (DeepResearchRequest)",
+      "simulated": "Request Model Validated Successfully.\n\nResponse Model Constructed Successfully.",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "user_query": "Summarize the key findings of the latest IPCC report regarding sea-level rise projections for 2100."
+      },
+      "expected": "Validation Successful (DeepResearchRequest)",
+      "simulated": "Request Model Validated Successfully.\n\nResponse Model Constructed Successfully.",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "complex_query": "Develop a comprehensive strategy for integrating quantum machine learning models into existing cloud infrastructure, focusing on latency constraints and data security protocols.",
+        "context": {
+          "priority_level": "High",
+          "target_latency_ms": 50,
+          "security_compliance": [
+            "ISO 27001",
+            "GDPR"
+          ]
+        }
+      },
+      "expected": null,
+      "simulated": null,
+      "is_correct": false
+    },
+    {
+      "input": {
+        "complex_query": "Summarize the historical evolution of distributed ledger technology.",
+        "context": {}
+      },
+      "expected": null,
+      "simulated": "Submitting complex query to: http://localhost:8000/api/v1/query_plan\nError: An unexpected request error occurred: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /api/v1/query_plan (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x...>: Failed to establish a new connection: [Errno 61] Connection refused'))\nClient module initialized. Ready to submit complex queries for planning.",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "complex_query": "Investigate the feasibility of using recursive self-improvement loops (RSI) in large language models (LLMs) for automated code generation, considering potential catastrophic forgetting risks and computational overheads associated with iterative fine-tuning.",
+        "context": {
+          "model_family": "LLaMA-3",
+          "max_iterations": 1000
+        }
+      },
+      "expected": null,
+      "simulated": "--- Attempting to submit query plan (Mock API Call) ---\nSubmitting complex query to: http://localhost:8000/api/v1/query_plan\nError: An unexpected request error occurred: [Connection Error Details...]\nClient module initialized. Ready to submit complex queries for planning.",
+      "is_correct": true
+    },
+    {
+      "input": null,
+      "expected": null,
+      "simulated": "\n--- Attempting to submit query plan (Mock API Call) ---\nSubmitting complex query to: http://localhost:8000/api/v1/query_plan\nError: Failed to connect to the server at http://localhost:8000/api/v1/query_plan. Connection refused or DNS error.\n\nFailed to get a valid query plan response.\n\nClient module initialized. Ready to submit complex queries for planning.",
+      "is_correct": true
+    },
+    {
+      "input": null,
+      "expected": null,
+      "simulated": "--- Attempting to submit query plan (Mock API Call) ---\nSubmitting complex query to: http://localhost:8000/api/v1/query_plan\nError: Failed to connect to the server at http://localhost:8000/api/v1/query_plan. Connection refused or DNS error.\n\nClient module initialized. Ready to submit complex queries for planning.",
+      "is_correct": true
+    },
+    {
+      "input": null,
+      "expected": null,
+      "simulated": "--- Attempting to submit query plan (Mock API Call) ---\nSubmitting complex query to: http://localhost:8000/api/v1/query_plan\nError: Failed to connect to the server at http://localhost:8000/api/v1/query_plan. Connection refused or DNS error.\nClient module initialized. Ready to submit complex queries for planning.",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "request": {
+          "task_id": "query_101",
+          "context": [
+            "The capital of France is Paris.",
+            "Paris is known for the Eiffel Tower."
+          ]
+        }
+      },
+      "expected": null,
+      "simulated": "Successfully initiated task: task_1\nTask task_1 status: PENDING. Waiting 1s...\nTask task_1 status: PENDING. Waiting 1s...\nTask task_1 status: PROCESSING. Waiting 1s...\n\n--- Final Result ---\nStatus: COMPLETED\nAnswer: The synthesized answer based on multi-agent deliberation and credibility-aware attention.",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "request": {
+          "task_id": "query_102_empty",
+          "context": []
+        }
+      },
+      "expected": null,
+      "simulated": "Task task_1 status: COMPLETED\nAnswer: The synthesized answer based on multi-agent deliberation and credibility-aware attention.",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "task_id": "task_999_long_process",
+        "poll_interval": 1,
+        "timeout": 2
+      },
+      "expected": null,
+      "simulated": "--- Final Result ---\nStatus: COMPLETED\nAnswer: The synthesized answer based on multi-agent deliberation and credibility-aware attention.",
+      "is_correct": true
+    },
+    {
+      "input": "What are the primary differences between supervised and unsupervised learning algorithms, and provide one real-world application where unsupervised methods are strictly preferred?",
+      "expected": null,
+      "simulated": "The workflow successfully executed, utilizing the mocked API to retrieve simulated data for two planning-related sub-queries, and then passed this context to the AnswerGenerator.",
+      "is_correct": true
+    },
+    {
+      "input": "Calculate the required latency budget for a 5-step pipeline where each step has a 10ms processing time and a 5% failure rate, assuming a 99% overall success target.",
+      "expected": null,
+      "simulated": "Answer(text='The synthesis based on retrieved documents and computation...', confidence=0.95)",
+      "is_correct": true
+    },
+    {
+      "input": "Define REST.",
+      "expected": null,
+      "simulated": "--- FINAL RESULT ---\nAnswer Text: The synthesized answer based on retrieved documents.\nConfidence: 0.95",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "query_id": "DRQ-2024-002",
+        "initial_question": "Compare the efficiency of sequential vs. tree-based planning in RAG systems, focusing only on latency metrics.",
+        "target_domain": "LLM Performance Benchmarking",
+        "max_iterations": 3
+      },
+      "expected": "The workflow should complete successfully, likely running fewer iterations than the mock setup, and the final answer should reflect the context retrieved related to latency.",
+      "simulated": "--- Deep Research Workflow Simulation Started ---\n\n[System Component Mapping]\nQuery Planning: Handled by client.plan_query()\nInformation Acquisition: Handled by client.acquire_information()\nMemory Management: Handled internally by client.execute_workflow()\nAnswer Generation: Handled by client.generate_answer()\n\n[Initial Query Setup]\nQuestion: Analyze the comparative advantages of sequential vs. tree-based planning paradigms in advanced Retrieval-Augmented Generation systems, focusing on computational cost and error propagation.\nMax Iterations: 5\n\n--- ITERATION 1 ---\n--- Planner Executing for Iteration 1 ---\n--- Information Acquisition for 2 queries ---\n--- ITERATION 2 ---\n--- Planner Executing for Iteration 2 ---\n--- Information Acquisition for 1 queries ---\n--- ITERATION 3 ---\n--- Planner Executing for Iteration 3 ---\n--- Information Acquisition for 1 queries ---\n--- ITERATION 4 ---\n--- Planner Executing for Iteration 4 ---\n\n==================================================\nWORKFLOW EXECUTION COMPLETE\n==================================================\nTotal Iterations Run: 4\nFinal Status: COMPLETE\n\n--- Final Answer ---\n        Final Verified Answer:\n        The comparative analysis reveals that Sequential Planning offers dynamic, context-aware reasoning but suffers from high computational costs and latency due to deep chains. Tree-based Planning mitigates some of these issues by structuring the search space as a DAG, allowing for more controlled, hybrid search strategies. The primary disadvantage of sequential methods is the risk of cumulative error propagation over many turns.\n        \n        --- Context Used ---\n        - [S1] Sequential planning allows dynamic, context-aware reasoning but incurs substantial compu...\n        - [S2] Tree-based planning uses DAG structures, enabling advanced search algorithms, integrat...\n        - [S3] Tree-based methods leverage advanced search algorithms on structured spaces (DAGs), o...\n        - [S4] Tree-based methods leverage advanced search algorithms on structured spaces (DAGs), o...\n        \n\n--- Plan Trace Summary ---\nIter 1: Strategy='Initial Decomposition (RAISE/Sequential)', Queries=2\nIter 2: Strategy='Deeper dive into Tree Structure (Tree-based Planning)', Queries=1\nIter 3: Strategy='Deeper dive into Tree Structure (Tree-based Planning)', Queries=1\nIter 4: Strategy='SYNTHESIZE_ANSWER', Queries=0",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "query_id": "DRQ-2024-003",
+        "initial_question": "What is the final synthesis strategy for RAG systems?",
+        "target_domain": "RAG Architecture Summary",
+        "max_iterations": 10
+      },
+      "expected": "The workflow should terminate immediately in the first iteration because the mock planner's final condition (len(memory) >= 4) is not met, but the initial decomposition might be skipped if the planner logic is sensitive to the initial question content (though the mock is primarily iteration-based, this tests a very short path).",
+      "simulated": "\n--- Deep Research Workflow Simulation Started ---\n\n[System Component Mapping]\nQuery Planning: Handled by client.plan_query()\nInformation Acquisition: Handled by client.acquire_information()\nMemory Management: Handled internally by client.execute_workflow()\nAnswer Generation: Handled by client.generate_answer()\n\n[Initial Query Setup]\nQuestion: Analyze the comparative advantages of sequential vs. tree-based planning paradigms in advanced Retrieval-Augmented Generation systems, focusing on computational cost and error propagation.\nMax Iterations: 5\n--- Planner Executing for Iteration 1 ---\n--- Information Acquisition for 2 queries ---\n--- Planner Executing for Iteration 2 ---\n--- Information Acquisition for 1 queries ---\n--- Planner Executing for Iteration 3 ---\n--- Information Acquisition for 1 queries ---\n--- Planner Executing for Iteration 4 ---\n--- Information Acquisition for 1 queries ---\n--- Planner Executing for Iteration 5 ---\n--- Information Acquisition for 1 queries ---\n--- Answer Generation Phase ---\n\n==================================================\nWORKFLOW EXECUTION COMPLETE\n==================================================\nTotal Iterations Run: 5\nFinal Status: COMPLETED_BY_MAX_ITERATIONS\n\n--- Final Answer ---\n\n        Final Verified Answer:\n        The comparative analysis reveals that Sequential Planning offers dynamic, context-aware reasoning but suffers from high computational costs and latency due to deep chains. Tree-based Planning mitigates some of these issues by structuring the search space as a DAG, allowing for more controlled, hybrid search strategies. The primary disadvantage of sequential methods is the risk of cumulative error propagation over many turns.\n        \n        --- Context Used ---\n        - [S1] Sequential planning allows dynamic, context-aware reasoning but incurs substantial ...\n        - [S2] Tree-based Planning uses DAG structures, enabling advanced search algorithms, integrat...\n        - [S4] Tree-based methods leverage advanced search algorithms on structured spaces (DAGs), ...\n        - [S5] General context retrieved for: Contrast Tree-based search algorithms (DAG vs Tree) [... \n        - [S6] General context retrieved for: Contrast Tree-based search algorithms (DAG vs Tree) [... \n        - [S7] General context retrieved for: Contrast Tree-based search algorithms (DAG vs Tree) [... \n        \n\n--- Plan Trace Summary ---\nIter 1: Strategy='Initial Decomposition (RAISE/Sequential)', Queries=2\nIter 2: Strategy='Deeper dive into Tree Structure (Tree-based Planning)', Queries=1\nIter 3: Strategy='Deeper dive into Tree Structure (Tree-based Planning)', Queries=1\nIter 4: Strategy='Deeper dive into Tree Structure (Tree-based Planning)', Queries=1\nIter 5: Strategy='Deeper dive into Tree Structure (Tree-based Planning)', Queries=1\n",
+      "is_correct": true
+    },
+    {
+      "input": {
+        "query_id": "DRQ-2024-004",
+        "initial_question": "Describe the general context of advanced reasoning techniques in AI.",
+        "target_domain": "General AI",
+        "max_iterations": 5
+      },
+      "expected": "The workflow should complete, but the information acquisition step should rely heavily on the generic 'General context retrieved' chunks, as the specific keywords ('Sequential Planning', 'Tree-based Planning') are absent from the initial decomposition.",
+      "simulated": "\n--- Deep Research Workflow Simulation Started ---\n\n[System Component Mapping]\nQuery Planning: Handled by client.plan_query()\nInformation Acquisition: Handled by client.acquire_information()\nMemory Management: Handled internally by client.execute_workflow()\nAnswer Generation: Handled by client.generate_answer()\n\n[Initial Query Setup]\nQuestion: Analyze the comparative advantages of sequential vs. tree-based planning paradigms in advanced Retrieval-Augmented Generation systems, focusing on computational cost and error propagation.\nMax Iterations: 5\n--- Planner Executing for Iteration 1 ---\n--- Information Acquisition for 2 queries ---\n--- Planner Executing for Iteration 2 ---\n--- Information Acquisition for 1 queries ---\n--- Planner Executing for Iteration 3 ---\n--- Information Acquisition for 1 queries ---\n--- Planner Executing for Iteration 4 ---\n--- Answer Generation Phase ---\n\n==================================================\nWORKFLOW EXECUTION COMPLETE\n==================================================\nTotal Iterations Run: 4\nFinal Status: COMPLETE\n\n--- Final Answer ---\n\n        Final Verified Answer:\n        The comparative analysis reveals that Sequential Planning offers dynamic, context-aware reasoning but suffers from high computational costs and latency due to deep chains. Tree-based Planning mitigates some of these issues by structuring the search space as a DAG, allowing for more controlled, hybrid search strategies. The primary disadvantage of sequential methods is the risk of cumulative error propagation over many turns.\n        \n        --- Context Used ---\n        - [S1] Sequential planning allows dynamic, context-aware reasoning but incurs substantial... \n        - [S2] Tree-based planning uses DAG structures, enabling advanced search algorithms, i...\n        - [S4] Tree-based methods leverage advanced search algorithms on structured spaces (...\n        - [S5] General context retrieved for: Contrast Tree-based search algorithms (DAG vs...\n\n--- Plan Trace Summary ---\nIter 1: Strategy='Initial Decomposition (RAISE/Sequential)', Queries=2\nIter 2: Strategy='Refinement based on Cost/Error gap (LLatrieval/ReSP)', Queries=1\nIter 3: Strategy='Deeper dive into Tree Structure (Tree-based Planning)', Queries=1\nIter 4: Strategy='SYNTHESIZE_ANSWER', Queries=0\n",
+      "is_correct": true
+    }
+  ],
+  "test_results": [
+    {
+      "file": "src/models.py",
+      "test": "test_request_happy_path_minimal",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_request_happy_path_full_context",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_response_happy_path_complete",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_edge_case_response_minimal_valid",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_edge_case_memory_empty_lists",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_error_request_invalid_max_iterations",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_error_response_missing_required_field",
+      "passed": false
+    },
+    {
+      "file": "src/models.py",
+      "test": "test_error_document_invalid_score_type",
+      "passed": false
+    },
+    {
+      "file": "src/modules/query_planner.py",
+      "test": "test_successful_query_submission",
+      "passed": false
+    },
+    {
+      "file": "src/modules/query_planner.py",
+      "test": "test_successful_submission_minimal_request",
+      "passed": false
+    },
+    {
+      "file": "src/modules/query_planner.py",
+      "test": "test_successful_submission_empty_plan_response",
+      "passed": false
+    },
+    {
+      "file": "src/modules/query_planner.py",
+      "test": "test_client_initialization_url_stripping",
+      "passed": false
+    },
+    {
+      "file": "src/modules/query_planner.py",
+      "test": "test_http_error_404",
+      "passed": false
+    },
+    {
+      "file": "src/modules/query_planner.py",
+      "test": "test_request_timeout_error",
+      "passed": false
+    },
+    {
+      "file": "src/modules/query_planner.py",
+      "test": "test_connection_error",
+      "passed": false
+    },
+    {
+      "file": "src/modules/answer_generator.py",
+      "test": "test_initiate_generation_success",
+      "passed": false
+    },
+    {
+      "file": "src/modules/answer_generator.py",
+      "test": "test_retrieve_answer_immediately_completed",
+      "passed": false
+    },
+    {
+      "file": "src/modules/answer_generator.py",
+      "test": "test_retrieve_answer_polling_to_completion",
+      "passed": false
+    },
+    {
+      "file": "src/modules/answer_generator.py",
+      "test": "test_client_initialization_url_stripping",
+      "passed": false
+    },
+    {
+      "file": "src/modules/answer_generator.py",
+      "test": "test_retrieve_answer_timeout",
+      "passed": false
+    },
+    {
+      "file": "src/modules/answer_generator.py",
+      "test": "test_initiate_generation_http_error",
+      "passed": false
+    },
+    {
+      "file": "src/modules/answer_generator.py",
+      "test": "test_retrieve_answer_server_failure_status",
+      "passed": false
+    },
+    {
+      "file": "src/modules/answer_generator.py",
+      "test": "test_retrieve_answer_completed_but_missing_answer",
+      "passed": false
+    }
+  ],
+  "refinement": {
+    "iterations": 3,
+    "improvements": [
+      {
+        "iteration": 1,
+        "file": "src/modules/query_planner.py",
+        "success": true
+      },
+      {
+        "iteration": 1,
+        "file": "src/modules/answer_generator.py",
+        "success": true
+      },
+      {
+        "iteration": 1,
+        "file": "src/models.py",
+        "success": true
+      },
+      {
+        "iteration": 2,
+        "file": "src/modules/query_planner.py",
+        "success": true
+      },
+      {
+        "iteration": 2,
+        "file": "src/modules/answer_generator.py",
+        "success": true
+      },
+      {
+        "iteration": 2,
+        "file": "src/models.py",
+        "success": true
+      },
+      {
+        "iteration": 3,
+        "file": "src/modules/query_planner.py",
+        "success": true
+      },
+      {
+        "iteration": 3,
+        "file": "src/modules/answer_generator.py",
+        "success": true
+      },
+      {
+        "iteration": 3,
+        "file": "src/models.py",
+        "success": true
+      }
+    ]
+  }
+}
